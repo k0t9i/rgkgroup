@@ -2,6 +2,7 @@
 
 namespace app\commands;
 
+use app\models\User;
 use Yii;
 use yii\console\Controller;
 use yii\console\controllers\MigrateController;
@@ -26,6 +27,18 @@ class InstallController extends Controller
             'interactive' => false,
             'force' => $this->force
         ]);
+
+        $user = new User([
+            'username' => 'admin',
+            'passwordHash' => Yii::$app->security->generatePasswordHash('admin'),
+            'lastname' => 'Test',
+            'firstname' => 'Test',
+            'email' => 'k0t9i@yandex.ru',
+            'createdAt' => time('Y-m-d')
+        ]);
+        $user->save();
+
+        Yii::$app->authManager->assign(Yii::$app->authManager->getRole('admin'), $user->id);
     }
 
     public function options($actionID)
