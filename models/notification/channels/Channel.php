@@ -2,11 +2,12 @@
 
 namespace app\models\notification\channels;
 
-use app\components\Notifier;
+use app\models\notification\NotificationModelInterface;
 use app\models\User;
 use Yii;
 use app\models\notification\Notification;
 use yii\db\ActiveRecord;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "{{%notification_channel}}".
@@ -19,9 +20,21 @@ abstract class Channel extends ActiveRecord
 {
     abstract protected function doProcess(Notification $item, array $placeholders = []);
 
-    public function process(Notification $item, array $placeholders = [])
+    public function process(Notification $item, NotificationModelInterface $eventModel)
     {
-        return $this->doProcess($item, $placeholders);
+        $recipients = [$item->recipient];
+        if (!$item->recipient) {
+            $recipients = User::find()->all();
+        }
+        $placeholders = self::preparePlaceholders($eventModel, $eventModel->getPlaceholders());
+
+        foreach ($recipients as $recipient) {
+            unset($item->recipient);
+            $item->recipientId = $recipient->id;
+            $fullPlaceholders = ArrayHelper::merge(self::preparePlaceholders($item, $item->getPlaceholders()), $placeholders);
+
+            $this->doProcess($item, $fullPlaceholders);
+        }
     }
 
     /**
@@ -44,10 +57,12 @@ abstract class Channel extends ActiveRecord
         return Yii::$app->I18n->format($str, $placeholders, Yii::$app->language);
     }
 
-    protected function getNotificationPlaceholders(Notification $model, User $recipient)
+    protected static function preparePlaceholders($model, $placeholders)
     {
-        $model->refresh();
-        $model->recipientId = $recipient->id;
-        return Notifier::preparePlaceholders($model, $model->getPlaceholders());
+        $ret = [];
+        foreach ($placeholders as $key => $value) {
+            $ret[$key] = is_callable($value) ? call_user_func($value, $model) : $model->$value;
+        }
+        return $ret;
     }
 }

@@ -33,19 +33,8 @@ class Notifier extends Component implements BootstrapInterface
         /** @var Notification $notification */
         $notification = $event->data['notification'];
 
-        $placeholders = self::preparePlaceholders($event->model, $event->model->getPlaceholders());
-
         foreach ($notification->channels as $channel){
-            $channel->process($notification, $placeholders);
+            $channel->process($notification, $event->model);
         }
-    }
-
-    public static function preparePlaceholders($model, $placeholders)
-    {
-        $ret = [];
-        foreach ($placeholders as $key => $value) {
-            $ret[$key] = is_callable($value) ? call_user_func($value, $model) : $model->$value;
-        }
-        return $ret;
     }
 }
