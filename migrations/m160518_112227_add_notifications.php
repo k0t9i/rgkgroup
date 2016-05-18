@@ -7,8 +7,8 @@ class m160518_112227_add_notifications extends Migration
     public function safeUp()
     {
         $this->createTable('{{%notification_event}}', [
-            'name' => $this->string(256)->notNull(),
-            'model' => $this->string(512)->notNull(),
+            'name' => $this->string(128)->notNull(),
+            'model' => $this->string(128)->notNull(),
             'description' => $this->string(2048)
         ]);
         $this->addPrimaryKey('pk-notification_event', '{{%notification_event}}', ['name', 'model']);
