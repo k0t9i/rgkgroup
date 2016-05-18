@@ -27,24 +27,27 @@ use yii\widgets\Menu;
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <a class="navbar-brand" href="#">rgk-group</a>
+                        <a class="navbar-brand" href="/">rgk-group</a>
                     </div>
                     <div class="collapse navbar-collapse pull-left" id="main-menu">
                         <?=Menu::widget([
                             'items' => [
                                 [
                                     'label' => 'Messages',
-                                    'url' => ['/message']
+                                    'url' => ['/message'],
+                                    'active' => Yii::$app->controller->id == 'message'
                                 ],
                                 [
                                     'label' => 'Articles',
                                     'url' => ['/article'],
-                                    'visible' => Yii::$app->user->can('article.viewList')
+                                    'visible' => Yii::$app->user->can('article.viewList'),
+                                    'active' => Yii::$app->controller->id == 'article'
                                 ],
                                 [
                                     'label' => 'Notifications',
                                     'url' => ['/notification'],
-                                    'visible' => Yii::$app->user->can('notification.viewList')
+                                    'visible' => Yii::$app->user->can('notification.viewList'),
+                                    'active' => Yii::$app->controller->id == 'notification'
                                 ]
                             ],
                             'options' => [

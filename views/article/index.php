@@ -16,6 +16,7 @@ $this->title = 'Articles'
 <?=GridView::widget([
     'dataProvider' => $dataProvider,
     'filterModel' => $searchModel,
+    'showOnEmpty' => false,
     'options' => [
         'class' => 'panel-body'
     ],

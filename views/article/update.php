@@ -28,9 +28,9 @@ $form = ActiveForm::begin([
 
 <div class="form-group">
     <div class="col-lg-offset-1 col-lg-11">
-        <?= Html::submitButton('Сохранить', ['class' => 'btn btn-primary']) ?>
-        <?= Html::submitButton('Применить', ['class' => 'btn btn-primary', 'name' => 'apply']) ?>
-        <?= Html::submitButton('Отмена', ['class' => 'btn btn-primary', 'name' => 'cancel']) ?>
+        <?= Html::submitButton('Save', ['class' => 'btn btn-primary']) ?>
+        <?= Html::submitButton('Apply', ['class' => 'btn btn-primary', 'name' => 'apply']) ?>
+        <?= Html::submitButton('Cancel', ['class' => 'btn btn-primary', 'name' => 'cancel']) ?>
     </div>
 </div>
 

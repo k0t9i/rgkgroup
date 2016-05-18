@@ -5,8 +5,8 @@ $base = require(__DIR__ . '/base.php');
 $config = [
     'id' => 'basic',
     'bootstrap' => ['notifier'],
+    'defaultRoute' => 'message/index',
     'components' => [
-        'defaultRoute' => 'message/index',
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => '_xRd4NdSmxWBBXgC5X37BN7NYrsCpD2T',
@@ -28,8 +28,6 @@ $config = [
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
-            'rules' => [
-            ],
         ],
         'notifier' => [
             'class' => 'app\components\Notifier'
@@ -42,6 +40,7 @@ if (YII_ENV_DEV) {
     $config['bootstrap'][] = 'debug';
     $config['modules']['debug'] = [
         'class' => 'yii\debug\Module',
+        'allowedIPs' => ['*']
     ];
 
     $config['bootstrap'][] = 'gii';

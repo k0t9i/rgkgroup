@@ -6,6 +6,8 @@ use app\models\LoginForm;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
+use yii\web\Response;
+use yii\widgets\ActiveForm;
 
 class DefaultController extends Controller
 {
@@ -42,6 +44,10 @@ class DefaultController extends Controller
         }
 
         $model = new LoginForm();
+        if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return ActiveForm::validate($model);
+        }
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
             return $this->goBack();
         }

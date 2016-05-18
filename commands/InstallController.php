@@ -39,11 +39,6 @@ class InstallController extends Controller
         $user->save();
 
         Yii::$app->authManager->assign(Yii::$app->authManager->getRole('admin'), $user->id);
-
-        (new Article([
-            'title' => 'test',
-            'body' => 'huest'
-        ]))->save();
     }
 
     public function options($actionID)
