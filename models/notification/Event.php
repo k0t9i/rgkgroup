@@ -11,10 +11,10 @@ use yii\base\InvalidCallException;
  * @property string $name
  * @property string $model
  * @property string $description
- * @property-read array $placeholders
  */
 class Event extends \yii\db\ActiveRecord
 {
+    private $_placeholders = [];
     /**
      * @inheritdoc
      */
@@ -23,15 +23,16 @@ class Event extends \yii\db\ActiveRecord
         return '{{%notification_event}}';
     }
 
-    public function getPlaceholders()
+    public function getPlaceholdersKeys()
     {
-        $model = new $this->model();
-        if (!($model instanceof NotificationModelInterface)) {
-            throw new InvalidCallException('Parameter model should be instance of NotificationModelInterface');
+        if (!$this->_placeholders) {
+            $model = new $this->model();
+            if (!($model instanceof NotificationModelInterface)) {
+                throw new InvalidCallException('Parameter model should be instance of NotificationModelInterface');
+            }
+            $this->_placeholders = array_keys($model->getPlaceholders());
         }
 
-        return array_map(function($el){
-            return '{' . $el . '}';
-        }, array_keys($model->getPlaceholders()));
+        return $this->_placeholders;
     }
 }

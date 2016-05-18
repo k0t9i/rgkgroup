@@ -2,6 +2,7 @@
 
 namespace app\models\notification\channels;
 
+use app\components\Notifier;
 use app\models\Message;
 use app\models\notification\Notification;
 use app\models\User;
@@ -27,6 +28,11 @@ class WebChannel extends Channel
             $message->id = null;
             $message->isNewRecord = true;
             $message->userId = $recipient->id;
+
+            $notificationPlaceholders = $this->getNotificationPlaceholders($item, $recipient);
+            
+            $message->title = $this->replacePlaceholders($message->title, $notificationPlaceholders);
+            $message->body = $this->replacePlaceholders($message->body, $notificationPlaceholders);
 
             $message->save();
         }

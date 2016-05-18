@@ -90,15 +90,12 @@ class NotificationController extends Controller
             throw new BadRequestHttpException();
         }
 
-        $event = Event::findOne([
-            'name' => $name
+        $notification = new Notification([
+            'eventName' => $name
         ]);
-        if (!$event) {
-            throw new NotFoundHttpException();
-        }
 
         return $this->renderPartial('_placeholders', [
-            'items' => $event->placeholders
+            'items' => $notification->getPlaceholdersKeys()
         ]);
     }
 }

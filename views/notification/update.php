@@ -10,11 +10,10 @@ use app\models\notification\channels\Channel;
 $this->title = ($model->isNewRecord ? 'Create' : 'Update') . ' notfication';
 
 $placeholders = '';
-if ($model->event) {
-    $placeholders = $this->render('_placeholders', [
-        'items' => $model->event->placeholders
-    ]);
-}
+$placeholders = $this->render('_placeholders', [
+    'items' => $model->getPlaceholdersKeys()
+]);
+
 $fieldWithPlaceholders = "{label}\n<div class=\"col-lg-7\">{input}\n<div class=\"event-placeholders\">{$placeholders}</div></div>\n<div class=\"col-lg-4\">{error}</div>";
 ?>
 <div class="page-header">

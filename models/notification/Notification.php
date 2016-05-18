@@ -198,4 +198,28 @@ class Notification extends ActiveRecord
         parent::afterFind();
         $this->_oldChannels = $this->channelsAttr;
     }
+    
+    public function getPlaceholders()
+    {
+        return [
+            'recipient_username' => function(Notification $model){
+                return $model->recipient ? $model->recipient->username : '';
+            },
+            'recipient_lastname' => function(Notification $model){
+                return $model->recipient ? $model->recipient->lastname : '';
+            },
+            'recipient_firstname' => function(Notification $model){
+                return $model->recipient ? $model->recipient->firstname : '';
+            },
+            'recipient_email' => function(Notification $model){
+                return $model->recipient ? $model->recipient->email : '';
+            }
+        ];
+    }
+
+    public function getPlaceholdersKeys()
+    {
+        $eventPlaceholders = $this->event ? $this->event->getPlaceholdersKeys() : [];
+        return ArrayHelper::merge(array_keys($this->getPlaceholders()), $eventPlaceholders);
+    }
 }

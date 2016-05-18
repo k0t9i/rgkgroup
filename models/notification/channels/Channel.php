@@ -2,6 +2,8 @@
 
 namespace app\models\notification\channels;
 
+use app\components\Notifier;
+use app\models\User;
 use Yii;
 use app\models\notification\Notification;
 use yii\db\ActiveRecord;
@@ -40,5 +42,12 @@ abstract class Channel extends ActiveRecord
     protected function replacePlaceholders($str, array $placeholders)
     {
         return Yii::$app->I18n->format($str, $placeholders, Yii::$app->language);
+    }
+
+    protected function getNotificationPlaceholders(Notification $model, User $recipient)
+    {
+        $model->refresh();
+        $model->recipientId = $recipient->id;
+        return Notifier::preparePlaceholders($model, $model->getPlaceholders());
     }
 }
