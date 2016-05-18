@@ -8,6 +8,7 @@ use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\db\Expression;
+use yii\helpers\Url;
 
 /**
  * This is the model class for table "{{%article}}".
@@ -74,17 +75,23 @@ class Article extends ActiveRecord implements NotificationModelInterface
     {
         parent::afterSave($insert, $changedAttributes);
 
-        //if ($insert) {
+        if ($insert) {
             self::trigger(self::EVENT_AFTER_CREATE, new NotificationEvent([
                 'model' => $this
             ]));
-        //}
+        }
     }
 
     public function getPlaceholders()
     {
         return [
-            'title' => 'title'
+            'title' => 'title',
+            'brief' => function ($model) {
+                return mb_substr($model->body, 0, 256);
+            },
+            'link' => function ($model) {
+                return Url::to(['article/update', 'id' => $model->id], true);
+            }
         ];
     }
 }

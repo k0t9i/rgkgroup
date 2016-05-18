@@ -12,7 +12,10 @@ use Yii;
 use yii\filters\AccessControl;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
+use yii\web\BadRequestHttpException;
 use yii\web\Controller;
+use yii\web\NotFoundHttpException;
+use yii\web\Response;
 
 class NotificationController extends Controller
 {
@@ -41,7 +44,12 @@ class NotificationController extends Controller
                         'actions' => ['delete'],
                         'allow' => true,
                         'roles' => ['notification.create'],
-                    ]
+                    ],
+                    [
+                        'actions' => ['event-placeholders'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
                 ],
             ]
         ];
@@ -73,6 +81,24 @@ class NotificationController extends Controller
             'dataProvider' => $model->search(Yii::$app->request->get()),
             'searchModel' => $model,
             'returnUrl' => Url::current(['_pjax' => null])
+        ]);
+    }
+
+    public function actionEventPlaceholders($name)
+    {
+        if (!Yii::$app->request->isAjax || !YII_ENV_DEV) {
+            throw new BadRequestHttpException();
+        }
+
+        $event = Event::findOne([
+            'name' => $name
+        ]);
+        if (!$event) {
+            throw new NotFoundHttpException();
+        }
+
+        return $this->renderPartial('_placeholders', [
+            'items' => $event->placeholders
         ]);
     }
 }

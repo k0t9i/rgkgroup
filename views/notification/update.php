@@ -1,12 +1,21 @@
 <?php
 use yii\bootstrap\ActiveForm;
-use yii\bootstrap\Html;
 use yii\helpers\ArrayHelper;
 use app\models\notification\Event;
+use \yii\helpers\Url;
+use yii\helpers\Html;
 use app\models\User;
 use app\models\notification\channels\Channel;
 
 $this->title = ($model->isNewRecord ? 'Create' : 'Update') . ' notfication';
+
+$placeholders = '';
+if ($model->event) {
+    $placeholders = $this->render('_placeholders', [
+        'items' => $model->event->placeholders
+    ]);
+}
+$fieldWithPlaceholders = "{label}\n<div class=\"col-lg-7\">{input}\n<div class=\"event-placeholders\">{$placeholders}</div></div>\n<div class=\"col-lg-4\">{error}</div>";
 ?>
 <div class="page-header">
     <h3><?=$this->title?></h3>
@@ -36,8 +45,12 @@ $form = ActiveForm::begin([
     'prompt' => 'Send all'
 ]) ?>
 <?= $form->field($model, 'channelsAttr')->checkboxList(ArrayHelper::map(Channel::find()->asArray()->orderBy(['title' => SORT_ASC])->all(), 'id', 'title')) ?>
-<?= $form->field($model, 'title')->textInput(['autofocus' => true]) ?>
-<?= $form->field($model, 'body')->textarea([
+<?= $form->field($model, 'title', [
+    'template' => $fieldWithPlaceholders,
+])->textInput(['autofocus' => true]) ?>
+<?= $form->field($model, 'body', [
+    'template' => $fieldWithPlaceholders,
+])->textarea([
     'rows' => 5
 ]) ?>
 
@@ -50,3 +63,21 @@ $form = ActiveForm::begin([
 </div>
 
 <?php ActiveForm::end(); ?>
+
+<?php
+$this->registerJs('
+    $("#' . Html::getInputId($model, 'eventName') . '").on("change", function(){
+        var $this = $(this);
+        $.ajax({
+            url: "' . Url::to(['event-placeholders']) . '?name=" + $this.val(),
+            dataType: "html",
+            beforeSend: function() {
+                $(".event-placeholders").html("");
+            },
+            success: function(data) {
+                $(".event-placeholders").html(data);
+            }
+        });
+    });
+');
+?>
