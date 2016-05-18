@@ -9,7 +9,7 @@ use yii\web\Controller;
 
 class DefaultController extends Controller
 {
-    public function behaviors1()
+    public function behaviors()
     {
         return [
             'access' => [
