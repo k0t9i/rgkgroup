@@ -73,12 +73,12 @@ class Article extends ActiveRecord implements NotificationModelInterface
     public function afterSave($insert, $changedAttributes)
     {
         parent::afterSave($insert, $changedAttributes);
-        
-        if ($insert) {
+
+        //if ($insert) {
             self::trigger(self::EVENT_AFTER_CREATE, new NotificationEvent([
                 'model' => $this
             ]));
-        }
+        //}
     }
 
     public function getPlaceholders()

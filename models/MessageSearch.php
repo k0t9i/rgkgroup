@@ -4,20 +4,14 @@ namespace app\models;
 
 use yii\data\ActiveDataProvider;
 
-class ArticleSearch extends Article
+class MessageSearch extends Message
 {
     const PAGE_SIZE = 10;
 
-    public function rules()
-    {
-        return [
-            ['title', 'safe']
-        ];
-    }
-
     public function search($params)
     {
-        $query = Article::find();
+        $query = Message::find()
+            ->where(['userId' => $this->userId]);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query
@@ -25,11 +19,7 @@ class ArticleSearch extends Article
         $dataProvider->sort->defaultOrder = [
             'createdAt' => SORT_DESC
         ];
-
-        if ($this->load($params)) {
-            $query->andWhere(['like', 'title', $this->title]);
-        }
-
+        
         $dataProvider->pagination->pageSize = self::PAGE_SIZE;
         return $dataProvider;
     }
