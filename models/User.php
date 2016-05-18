@@ -4,6 +4,9 @@ namespace app\models;
 
 use Yii;
 use yii\base\NotSupportedException;
+use yii\behaviors\TimestampBehavior;
+use yii\db\ActiveRecord;
+use yii\db\Expression;
 use yii\web\IdentityInterface;
 
 /**
@@ -18,7 +21,7 @@ use yii\web\IdentityInterface;
  * @property string $createdAt
  * @property string $updatedAt
  */
-class User extends \yii\db\ActiveRecord implements IdentityInterface
+class User extends ActiveRecord implements IdentityInterface
 {
     /**
      * @inheritdoc
@@ -96,5 +99,19 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     public function validatePassword($password)
     {
         return Yii::$app->security->validatePassword($password, $this->passwordHash);
+    }
+
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => TimestampBehavior::className(),
+                'value' => new Expression('NOW()'),
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => 'createdAt',
+                    ActiveRecord::EVENT_BEFORE_UPDATE => 'updatedAt'
+                ]
+            ]
+        ];
     }
 }

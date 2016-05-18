@@ -33,8 +33,7 @@ class InstallController extends Controller
             'passwordHash' => Yii::$app->security->generatePasswordHash('admin'),
             'lastname' => 'Test',
             'firstname' => 'Test',
-            'email' => 'k0t9i@yandex.ru',
-            'createdAt' => time('Y-m-d')
+            'email' => 'k0t9i@yandex.ru'
         ]);
         $user->save();
 
