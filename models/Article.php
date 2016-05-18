@@ -2,6 +2,8 @@
 
 namespace app\models;
 
+use app\models\notification\NotificationEvent;
+use app\models\notification\NotificationModelInterface;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
@@ -16,8 +18,10 @@ use yii\db\Expression;
  * @property string $createdAt
  * @property string $updatedAt
  */
-class Article extends ActiveRecord
+class Article extends ActiveRecord implements NotificationModelInterface
 {
+    const EVENT_AFTER_CREATE = 'article.afterCreate';
+
     /**
      * @inheritdoc
      */
@@ -63,6 +67,24 @@ class Article extends ActiveRecord
                     ActiveRecord::EVENT_BEFORE_UPDATE => 'updatedAt'
                 ]
             ]
+        ];
+    }
+
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+        
+        if ($insert) {
+            self::trigger(self::EVENT_AFTER_CREATE, new NotificationEvent([
+                'model' => $this
+            ]));
+        }
+    }
+
+    public function getPlaceholders()
+    {
+        return [
+            'title' => 'title'
         ];
     }
 }

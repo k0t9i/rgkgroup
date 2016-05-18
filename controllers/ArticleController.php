@@ -7,6 +7,7 @@ use app\actions\DeleteAction;
 use app\actions\UpdateAction;
 use app\models\Article;
 use app\models\ArticleSearch;
+use app\models\notification\Notification;
 use Yii;
 use yii\filters\AccessControl;
 use yii\helpers\Url;

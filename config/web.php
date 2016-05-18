@@ -4,6 +4,7 @@ $base = require(__DIR__ . '/base.php');
 
 $config = [
     'id' => 'basic',
+    'bootstrap' => ['notifier'],
     'components' => [
         'defaultRoute' => 'message/index',
         'request' => [
@@ -30,6 +31,9 @@ $config = [
             'rules' => [
             ],
         ],
+        'notifier' => [
+            'class' => 'app\components\Notifier'
+        ]
     ],
 ];
 
