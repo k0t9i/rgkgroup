@@ -1,0 +1,52 @@
+<?php
+use yii\bootstrap\ActiveForm;
+use yii\bootstrap\Html;
+use yii\helpers\ArrayHelper;
+use app\models\notification\Event;
+use app\models\User;
+use app\models\notification\channels\Channel;
+
+$this->title = ($model->isNewRecord ? 'Create' : 'Update') . ' notfication';
+?>
+<div class="page-header">
+    <h3><?=$this->title?></h3>
+</div>
+<?php
+$form = ActiveForm::begin([
+    'id' => 'notification-form',
+    'options' => ['class' => 'form-horizontal'],
+    'enableClientValidation' => false,
+    'enableAjaxValidation' => true,
+    'validateOnChange' => false,
+    'validateOnBlur' => false,
+    'fieldConfig' => [
+        'template' => "{label}\n<div class=\"col-lg-7\">{input}</div>\n<div class=\"col-lg-4\">{error}</div>",
+        'labelOptions' => ['class' => 'col-lg-1 control-label'],
+    ],
+]); ?>
+
+<?= $form->field($model, 'eventName')->dropDownList(ArrayHelper::map(Event::find()->asArray()->orderBy(['name' => SORT_ASC])->all(), 'name', 'name'), [
+    'autofocus' => true,
+    'prompt' => 'Select event'
+]) ?>
+<?= $form->field($model, 'senderId')->dropDownList(ArrayHelper::map(User::find()->asArray()->orderBy(['username' => SORT_ASC])->all(), 'id', 'username'), [
+    'prompt' => 'System'
+]) ?>
+<?= $form->field($model, 'recipientId')->dropDownList(ArrayHelper::map(User::find()->asArray()->orderBy(['username' => SORT_ASC])->all(), 'id', 'username'), [
+    'prompt' => 'Send all'
+]) ?>
+<?= $form->field($model, 'channelsAttr')->checkboxList(ArrayHelper::map(Channel::find()->asArray()->orderBy(['title' => SORT_ASC])->all(), 'id', 'title')) ?>
+<?= $form->field($model, 'title')->textInput(['autofocus' => true]) ?>
+<?= $form->field($model, 'body')->textarea([
+    'rows' => 5
+]) ?>
+
+<div class="form-group">
+    <div class="col-lg-offset-1 col-lg-11">
+        <?= Html::submitButton('Save', ['class' => 'btn btn-primary']) ?>
+        <?= Html::submitButton('Apply', ['class' => 'btn btn-primary', 'name' => 'apply']) ?>
+        <?= Html::submitButton('Cancel', ['class' => 'btn btn-primary', 'name' => 'cancel']) ?>
+    </div>
+</div>
+
+<?php ActiveForm::end(); ?>

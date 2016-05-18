@@ -3,14 +3,16 @@ use yii\grid\GridView;
 use yii\widgets\Pjax;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
+use yii\helpers\ArrayHelper;
+use app\models\notification\Event;
 
-$this->title = 'Articles'
+$this->title = 'Notifications'
 ?>
 <div class="page-header">
     <h3><?=$this->title?></h3>
 </div>
 <div class="panel-body">
-    <a href="<?=Url::to(['create', 'returnUrl' => $returnUrl])?>" class="btn btn-primary">Create article</a>
+    <a href="<?=Url::to(['create', 'returnUrl' => $returnUrl])?>" class="btn btn-primary">Create notification</a>
 </div>
 <?php Pjax::begin(['timeout' => 20000]); ?>
 <?=GridView::widget([
@@ -27,6 +29,13 @@ $this->title = 'Articles'
             'class' => \yii\grid\SerialColumn::className()
         ],
         'title',
+        [
+            'attribute' => 'eventName',
+            'filter' => ArrayHelper::map(Event::find()->asArray()->orderBy(['name' => SORT_ASC])->all(), 'name', 'name'),
+            'headerOptions' => [
+                'style' => 'width:200px;'
+            ]
+        ],
         [
             'attribute' => 'createdAt',
             'format' => 'datetime',
