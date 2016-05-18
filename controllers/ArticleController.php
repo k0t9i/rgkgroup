@@ -2,11 +2,15 @@
 
 namespace app\controllers;
 
+use app\actions\CreateAction;
+use app\actions\DeleteAction;
+use app\actions\UpdateAction;
 use app\models\Article;
 use app\models\ArticleSearch;
 use Yii;
 use yii\filters\AccessControl;
 use yii\helpers\Url;
+use yii\web\Controller;
 
 class ArticleController extends Controller
 {
@@ -41,9 +45,22 @@ class ArticleController extends Controller
         ];
     }
 
-    public function getModelName()
+    public function actions()
     {
-        return Article::className();
+        return [
+            'create' => [
+                'class' => CreateAction::className(),
+                'modelName' => Article::className()
+            ],
+            'update' => [
+                'class' => UpdateAction::className(),
+                'modelName' => Article::className()
+            ],
+            'delete' => [
+                'class' => DeleteAction::className(),
+                'modelName' => Article::className()
+            ]
+        ];
     }
 
     public function actionIndex()
@@ -55,25 +72,5 @@ class ArticleController extends Controller
             'searchModel' => $model,
             'returnUrl' => Url::current(['_pjax' => null])
         ]);
-    }
-
-    public function actionCreate($returnUrl = null)
-    {
-        return $this->processForm(null, $returnUrl);
-    }
-
-    public function actionUpdate($id, $returnUrl = null)
-    {
-        return $this->processForm($id, $returnUrl);
-    }
-
-    public function actionDelete($id, $returnUrl = null)
-    {
-        $this->getModel($id)->delete();
-
-        if ($returnUrl) {
-            return $this->redirect($returnUrl);
-        }
-        return $this->redirect(['index']);
     }
 }
