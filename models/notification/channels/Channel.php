@@ -47,7 +47,16 @@ abstract class Channel extends ActiveRecord
             $item->recipientId = $recipient->id;
             $fullPlaceholders = ArrayHelper::merge($globalPlaceholders, self::preparePlaceholders($item, $item->getPlaceholders()), $placeholders);
 
+            // save old values
+            $title = $item->title;
+            $body = $item->body;
+
+            $item->title = $this->replacePlaceholders($item->title, $fullPlaceholders);
+            $item->body = $this->replacePlaceholders($item->body, $fullPlaceholders);
             $this->doProcess($item, $fullPlaceholders);
+
+            $item->title = $title;
+            $item->body = $body;
         }
     }
 

@@ -16,8 +16,8 @@ class WebChannel extends Channel
 
         $message = new Message([
             'senderId' => $senderId,
-            'title' => $this->replacePlaceholders($item->title, $placeholders),
-            'body' => $this->replacePlaceholders($item->body, $placeholders),
+            'title' => $item->title,
+            'body' => $item->body,
             'userId' => $item->recipient->id
         ]);
 

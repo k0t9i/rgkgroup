@@ -17,13 +17,13 @@ class MailChannel extends Channel
 
         Yii::$app->mailer
             ->compose(['html' => 'notification/html'], [
-                'body' => $this->replacePlaceholders($item->body, $placeholders)
+                'body' => $item->body
             ])
             ->setTo([
                 $recipient->email => $recipient->lastname . ' ' . $recipient->firstname
             ])
             ->setFrom(Yii::$app->params['fromEmail'])
-            ->setSubject($this->replacePlaceholders($item->title, $placeholders))
+            ->setSubject($item->title)
             ->send();
     }
 }
