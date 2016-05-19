@@ -21,7 +21,8 @@ class Notifier extends Component implements BootstrapInterface
     {
         $model = $this->notificationModel;
 
-        foreach ($model::find()->all() as $item) {
+        // todo Think about notification order
+        foreach ($model::find()->orderBy(['createdAt' => SORT_DESC])->all() as $item) {
             Event::on($item->event->model, $item->event->name, [$this, 'onEvent'], [
                 'notification' => $item
             ]);

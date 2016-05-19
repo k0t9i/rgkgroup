@@ -33,8 +33,8 @@ $form = ActiveForm::begin([
     ],
 ]); ?>
 
+<?= $form->field($model, 'name')->textInput(['autofocus' => true]) ?>
 <?= $form->field($model, 'eventName')->dropDownList(ArrayHelper::map(Event::find()->asArray()->orderBy(['name' => SORT_ASC])->all(), 'name', 'name'), [
-    'autofocus' => true,
     'prompt' => 'Select event'
 ]) ?>
 <?= $form->field($model, 'senderId')->dropDownList(ArrayHelper::map(User::find()->asArray()->orderBy(['username' => SORT_ASC])->all(), 'id', 'username'), [
@@ -46,7 +46,7 @@ $form = ActiveForm::begin([
 <?= $form->field($model, 'channelsAttr')->checkboxList(ArrayHelper::map(Channel::find()->asArray()->orderBy(['title' => SORT_ASC])->all(), 'id', 'title')) ?>
 <?= $form->field($model, 'title', [
     'template' => $fieldWithPlaceholders,
-])->textInput(['autofocus' => true]) ?>
+])->textInput() ?>
 <?= $form->field($model, 'body', [
     'template' => $fieldWithPlaceholders,
 ])->textarea([

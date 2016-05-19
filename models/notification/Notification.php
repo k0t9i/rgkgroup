@@ -21,6 +21,7 @@ use yii\helpers\ArrayHelper;
  * @property string $body
  * @property string $createdAt
  * @property string $updatedAt
+ * @property string $name
  *
  * @property-read Channel[] $channels
  * @property-read Event $event
@@ -56,10 +57,10 @@ class Notification extends ActiveRecord
     public function rules()
     {
         return [
-            [['eventName', 'title', 'body', 'channelsAttr'], 'required'],
+            [['eventName', 'title', 'body', 'channelsAttr', 'name'], 'required'],
             [['recipientId', 'senderId'], 'integer'],
             ['body', 'string'],
-            ['eventName', 'string', 'max' => 256],
+            [['eventName', 'name'], 'string', 'max' => 256],
             ['title', 'string', 'max' => 512],
             ['eventName', 'exist', 'targetClass' => Event::className(), 'targetAttribute' => 'name'],
             [['senderId', 'recipientId'], 'exist', 'targetClass' => User::className(), 'targetAttribute' => 'id'],

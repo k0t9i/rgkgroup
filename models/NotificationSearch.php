@@ -12,7 +12,7 @@ class NotificationSearch extends Notification
     public function rules()
     {
         return [
-            [['title', 'recipientId', 'senderId', 'eventName'], 'safe']
+            [['name', 'eventName'], 'safe']
         ];
     }
 
@@ -29,7 +29,8 @@ class NotificationSearch extends Notification
         ];
 
         if ($this->load($params)) {
-            $query->andWhere(['like', 'title', $this->title]);
+            $query->andFilterWhere(['like', 'name', $this->name]);
+            $query->andFilterWhere(['eventName' => $this->eventName]);
         }
 
         $dataProvider->pagination->pageSize = self::PAGE_SIZE;

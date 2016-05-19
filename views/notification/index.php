@@ -28,7 +28,7 @@ $this->title = 'Notifications'
         [
             'class' => \yii\grid\SerialColumn::className()
         ],
-        'title',
+        'name',
         [
             'attribute' => 'eventName',
             'filter' => ArrayHelper::map(Event::find()->asArray()->orderBy(['name' => SORT_ASC])->all(), 'name', 'name'),
