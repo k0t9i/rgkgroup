@@ -3,6 +3,8 @@ RGK Group test
 
 Event based notification system
 
+Lead time: 10 hours
+
 INSTALLATION
 -------------------
 
