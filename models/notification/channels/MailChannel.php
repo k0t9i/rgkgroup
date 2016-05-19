@@ -2,6 +2,7 @@
 
 namespace app\models\notification\channels;
 
+use Yii;
 use app\models\notification\Notification;
 
 class MailChannel extends Channel
@@ -9,6 +10,17 @@ class MailChannel extends Channel
 
     protected function doProcess(Notification $item, array $placeholders = [])
     {
-        // TODO: Implement doProcess() method.
+        $recipient = $item->recipient;
+
+        Yii::$app->mailer
+            ->compose(['html' => 'notification/html'], [
+                'body' => $this->replacePlaceholders($item->body, $placeholders)
+            ])
+            ->setTo([
+                $recipient->email => $recipient->lastname . ' ' . $recipient->firstname
+            ])
+            ->setFrom(Yii::$app->params['fromEmail'])
+            ->setSubject($this->replacePlaceholders($item->title, $placeholders))
+            ->send();
     }
 }
