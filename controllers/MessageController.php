@@ -2,10 +2,14 @@
 
 namespace app\controllers;
 
+use app\models\Message;
 use Yii;
 use app\models\MessageSearch;
 use yii\filters\AccessControl;
+use yii\helpers\Url;
 use yii\web\Controller;
+use yii\web\NotFoundHttpException;
+use yii\web\Response;
 
 class MessageController extends Controller
 {
@@ -16,7 +20,6 @@ class MessageController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['index'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -33,7 +36,24 @@ class MessageController extends Controller
 
         return $this->render('index', [
             'dataProvider' => $model->search(Yii::$app->request->get()),
-            'searchModel' => $model
+            'searchModel' => $model,
+            'returnUrl' => Url::current(['_pjax' => null])
         ]);
+    }
+
+    public function actionRead($id, $returnUrl = null) {
+        $model = Message::findOne((int) $id);
+        if (!$model) {
+            throw new NotFoundHttpException('Message not found');
+        }
+
+        $model->touch('readedAt');
+        $model->save();
+
+        if ($returnUrl) {
+            $this->redirect($returnUrl);
+        } else {
+            $this->redirect(['index']);
+        }
     }
 }

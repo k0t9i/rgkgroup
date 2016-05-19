@@ -30,3 +30,7 @@ a.asc:after {
 a.desc:after {
     content: /*"\e114"*/ "\e152";
 }
+
+.summary {
+    margin-bottom:10px;
+}

@@ -56,4 +56,12 @@ class Message extends \yii\db\ActiveRecord
             'id' => 'senderId'
         ]);
     }
+
+    public static function getUnreadCountForUser($userId)
+    {
+        return self::find()
+            ->where(['readedAt' => null])
+            ->andWhere(['userId' => (int) $userId])
+            ->count();
+    }
 }

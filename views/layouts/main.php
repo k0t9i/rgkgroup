@@ -2,6 +2,7 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\Menu;
+use app\models\Message;
 
 \app\assets\AppAsset::register($this);
 ?>
@@ -33,9 +34,10 @@ use yii\widgets\Menu;
                         <?=Menu::widget([
                             'items' => [
                                 [
-                                    'label' => 'Messages',
+                                    'label' => 'Messages <span class="badge">' . Message::getUnreadCountForUser(Yii::$app->user->id) . '</span>',
                                     'url' => ['/message'],
-                                    'active' => Yii::$app->controller->id == 'message'
+                                    'active' => Yii::$app->controller->id == 'message',
+                                    'encode' => false
                                 ],
                                 [
                                     'label' => 'Articles',
