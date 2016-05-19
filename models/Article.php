@@ -90,7 +90,7 @@ class Article extends ActiveRecord implements NotificationModelInterface
                 return mb_substr($model->body, 0, 256);
             },
             'link' => function ($model) {
-                return Url::to(['article/update', 'id' => $model->id], true);
+                return Url::to(['article/view', 'id' => $model->id], true);
             }
         ];
     }

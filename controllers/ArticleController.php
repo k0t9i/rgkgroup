@@ -12,6 +12,8 @@ use Yii;
 use yii\filters\AccessControl;
 use yii\helpers\Url;
 use yii\web\Controller;
+use yii\web\NotFoundHttpException;
+use yii\web\ViewAction;
 
 class ArticleController extends Controller
 {
@@ -40,7 +42,12 @@ class ArticleController extends Controller
                         'actions' => ['delete'],
                         'allow' => true,
                         'roles' => ['article.create'],
-                    ]
+                    ],
+                    [
+                        'actions' => ['view'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
                 ],
             ]
         ];
@@ -72,6 +79,17 @@ class ArticleController extends Controller
             'dataProvider' => $model->search(Yii::$app->request->get()),
             'searchModel' => $model,
             'returnUrl' => Url::current(['_pjax' => null])
+        ]);
+    }
+
+    public function actionView($id) {
+        $model = Article::findOne((int) $id);
+        if (!$model) {
+            throw new NotFoundHttpException('Article not found');
+        }
+
+        return $this->render('view', [
+            'model' => $model
         ]);
     }
 }
