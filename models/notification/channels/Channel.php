@@ -78,7 +78,13 @@ abstract class Channel extends ActiveRecord
     {
         $channelClass = __NAMESPACE__ . '\\' . ucfirst($row['name']) . 'Channel';
 
-        return new $channelClass();
+        $ret = new $channelClass();
+
+        if (!($ret instanceof Channel)) {
+            throw new \LogicException('Notification channel class should be instance of Channel');
+        }
+
+        return $ret;
     }
 
     /**
