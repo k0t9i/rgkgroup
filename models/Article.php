@@ -57,6 +57,9 @@ class Article extends ActiveRecord implements NotificationModelInterface
         ];
     }
 
+    /**
+     * @inheritdoc
+     */
     public function behaviors()
     {
         return [
@@ -71,17 +74,23 @@ class Article extends ActiveRecord implements NotificationModelInterface
         ];
     }
 
+    /**
+     * @inheritdoc
+     */
     public function afterSave($insert, $changedAttributes)
     {
         parent::afterSave($insert, $changedAttributes);
 
-        //if ($insert) {
+        if ($insert) {
             self::trigger(self::EVENT_AFTER_CREATE, new NotificationEvent([
                 'model' => $this
             ]));
-        //}
+        }
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getPlaceholders()
     {
         return [

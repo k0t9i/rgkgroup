@@ -6,9 +6,22 @@ use yii\base\InvalidConfigException;
 use yii\db\ActiveRecord;
 use yii\web\NotFoundHttpException;
 
-class Action extends \yii\base\Action
+/**
+ * Base action class
+ */
+abstract class Action extends \yii\base\Action
 {
+    /**
+     * Name of action model
+     *
+     * @var string
+     */
     public $modelName;
+
+    /**
+     * Redirect after action to this url if returnUrl is undefined
+     * @var array
+     */
     public $defaultReturnUrl = ['index'];
 
     public function init()
@@ -27,6 +40,8 @@ class Action extends \yii\base\Action
     }
 
     /**
+     * Find or create action model
+     *
      * @param $id
      * @return ActiveRecord
      * @throws NotFoundHttpException

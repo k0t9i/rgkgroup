@@ -5,6 +5,9 @@ namespace app\models\notification\channels;
 use Yii;
 use app\models\notification\Notification;
 
+/**
+ * Email notification channel
+ */
 class MailChannel extends Channel
 {
 

@@ -30,6 +30,9 @@ class Message extends \yii\db\ActiveRecord
         return '{{%message}}';
     }
 
+    /**
+     * @inheritdoc
+     */
     public function behaviors()
     {
         return [
@@ -43,6 +46,9 @@ class Message extends \yii\db\ActiveRecord
         ];
     }
 
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getUser()
     {
         return $this->hasOne(User::className(), [
@@ -50,6 +56,9 @@ class Message extends \yii\db\ActiveRecord
         ]);
     }
 
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getSender()
     {
         return $this->hasOne(User::className(), [
@@ -57,6 +66,10 @@ class Message extends \yii\db\ActiveRecord
         ]);
     }
 
+    /**
+     * @param $userId
+     * @return int
+     */
     public static function getUnreadCountForUser($userId)
     {
         return self::find()

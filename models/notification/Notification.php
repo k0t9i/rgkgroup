@@ -6,6 +6,7 @@ use app\models\notification\channels\Channel;
 use app\models\User;
 use Yii;
 use yii\behaviors\TimestampBehavior;
+use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 use yii\db\Expression;
 use yii\helpers\ArrayHelper;
@@ -87,6 +88,9 @@ class Notification extends ActiveRecord
         ];
     }
 
+    /**
+     * @inheritdoc
+     */
     public function behaviors()
     {
         return [
@@ -101,6 +105,9 @@ class Notification extends ActiveRecord
         ];
     }
 
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getChannels()
     {
         return $this->hasMany(Channel::className(), [
@@ -110,6 +117,9 @@ class Notification extends ActiveRecord
         ]);
     }
 
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getEvent()
     {
         return $this->hasOne(Event::className(), [
@@ -117,6 +127,9 @@ class Notification extends ActiveRecord
         ]);
     }
 
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getRecipient()
     {
         return $this->hasOne(User::className(), [
@@ -124,6 +137,9 @@ class Notification extends ActiveRecord
         ]);
     }
 
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getSender()
     {
         return $this->hasOne(User::className(), [
@@ -199,7 +215,18 @@ class Notification extends ActiveRecord
         parent::afterFind();
         $this->_oldChannels = $this->channelsAttr;
     }
-    
+
+    /**
+     * Array of notification placeholders in following format:
+     * [
+     *     'placeholder1' => 'value',
+     *     'placeholder2' => function(Notification $model){
+     *          return $model->attribute;
+     *      }
+     * ]
+     *
+     * @return array
+     */
     public function getPlaceholders()
     {
         return [
@@ -218,6 +245,11 @@ class Notification extends ActiveRecord
         ];
     }
 
+    /**
+     * Get placeholders keys from this model and related event
+     *
+     * @return array
+     */
     public function getPlaceholdersKeys()
     {
         $eventPlaceholders = $this->event ? $this->event->getPlaceholdersKeys() : [];

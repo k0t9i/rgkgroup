@@ -4,10 +4,16 @@ namespace app\models;
 
 use yii\data\ActiveDataProvider;
 
+/**
+ * Search model for Article active record
+ */
 class ArticleSearch extends Article
 {
     const PAGE_SIZE = 10;
 
+    /**
+     * @inheritdoc
+     */
     public function rules()
     {
         return [
@@ -15,6 +21,12 @@ class ArticleSearch extends Article
         ];
     }
 
+    /**
+     * Get active data provider for list action
+     *
+     * @param $params
+     * @return ActiveDataProvider
+     */
     public function search($params)
     {
         $query = Article::find();

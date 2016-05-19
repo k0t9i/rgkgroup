@@ -101,6 +101,9 @@ class User extends ActiveRecord implements IdentityInterface
         return Yii::$app->security->validatePassword($password, $this->passwordHash);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function behaviors()
     {
         return [

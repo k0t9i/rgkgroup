@@ -23,6 +23,11 @@ class Event extends \yii\db\ActiveRecord
         return '{{%notification_event}}';
     }
 
+    /**
+     * Get placeholders keys from related model
+     *
+     * @return array
+     */
     public function getPlaceholdersKeys()
     {
         if (!$this->_placeholders) {

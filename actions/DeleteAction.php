@@ -2,10 +2,11 @@
 
 namespace app\actions;
 
+/**
+ * Class DeleteAction
+ */
 class DeleteAction extends Action
 {
-    public $defaultRedirect = ['index'];
-
     public function run($id, $returnUrl = null)
     {
         $this->getModel($id)->delete();

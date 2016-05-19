@@ -10,9 +10,29 @@ use yii\base\Component;
 use yii\base\Event;
 use yii\helpers\ArrayHelper;
 
+/**
+ *
+ */
 class Notifier extends Component implements BootstrapInterface
 {
+    /**
+     * Class of notification model
+     *
+     * @var string
+     */
     public $notificationModel = 'app\models\notification\Notification';
+
+    /**
+     * Array of global placeholders in following format:
+     * [
+     *     'placeholder1' => 'value',
+     *     'placeholder2' => function(Notifier $model){
+     *          return $model->attribute;
+     *      }
+     * ]
+     *
+     * @var array
+     */
     public $placeholders = [];
 
     /**
@@ -31,6 +51,11 @@ class Notifier extends Component implements BootstrapInterface
         }
     }
 
+    /**
+     * Method that is called when an event is received
+     *
+     * @param NotificationEvent $event
+     */
     public function onEvent(NotificationEvent $event)
     {
         /** @var Notification $notification */
@@ -41,6 +66,12 @@ class Notifier extends Component implements BootstrapInterface
         }
     }
 
+    /**
+     * Get all placeholders keys: model, notification and globals
+     *
+     * @param Notification $notification
+     * @return array
+     */
     public function getPlaceholdersKeys(Notification $notification)
     {
         return ArrayHelper::merge(array_keys($this->placeholders), $notification->getPlaceholdersKeys());

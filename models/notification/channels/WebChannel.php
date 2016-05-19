@@ -2,11 +2,12 @@
 
 namespace app\models\notification\channels;
 
-use app\components\Notifier;
 use app\models\Message;
 use app\models\notification\Notification;
-use app\models\User;
 
+/**
+ * Web notification channel
+ */
 class WebChannel extends Channel
 {
     protected function doProcess(Notification $item, array $placeholders = [])

@@ -7,11 +7,37 @@ use yii\db\ActiveRecord;
 use yii\web\Response;
 use yii\widgets\ActiveForm;
 
+/**
+ * Class UpdateAction
+ */
 class UpdateAction extends Action
 {
+    /**
+     * Action main view
+     *
+     * @var string
+     */
     public $view = 'update';
-    public $applyView = 'update';
+
+    /**
+     * Route where redirected if pressed apply button
+     *
+     * @var string|array
+     */
+    public $applyRoute = 'update';
+
+    /**
+     * Post param which shows that is being pressed cancel button
+     *
+     * @var string
+     */
     public $cancelParam = 'cancel';
+
+    /**
+     * Post param which shows that is being pressed apply button
+     *
+     * @var string
+     */
     public $applyParam = 'apply';
 
     public function run($id, $returnUrl = null)
@@ -19,6 +45,15 @@ class UpdateAction extends Action
         return $this->processForm($id, $returnUrl);
     }
 
+
+    /**
+     * Process action form and save model
+     *
+     * @param integer $id
+     * @param string $returnUrl
+     * @return Response
+     * @throws \yii\web\NotFoundHttpException
+     */
     protected function processForm($id = null, $returnUrl = null)
     {
         if (Yii::$app->request->post($this->cancelParam)) {
@@ -31,7 +66,7 @@ class UpdateAction extends Action
         if ($model->load(Yii::$app->request->post())) {
             if ($model->save()) {
                 if (Yii::$app->request->post($this->applyParam)) {
-                    return $this->controller->redirect([$this->applyView, 'id' => $model->id, 'returnUrl' => $returnUrl]);
+                    return $this->controller->redirect([$this->applyRoute, 'id' => $model->id, 'returnUrl' => $returnUrl]);
                 } else {
                     return $this->goBack($returnUrl);
                 }
@@ -42,6 +77,12 @@ class UpdateAction extends Action
         ]);
     }
 
+    /**
+     * Validate model via ajax
+     *
+     * @param ActiveRecord $model
+     * @return array|null
+     */
     protected function performAjaxValidation(ActiveRecord $model)
     {
         if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {

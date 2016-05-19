@@ -11,6 +11,7 @@ use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "{{%notification_channel}}".
+ * Abstract base class of notification channel
  *
  * @property integer $id
  * @property string $title
@@ -18,8 +19,20 @@ use yii\helpers\ArrayHelper;
  */
 abstract class Channel extends ActiveRecord
 {
+    /**
+     * Method for processing a single notification recipient
+     *
+     * @param Notification $item
+     * @param array $placeholders
+     */
     abstract protected function doProcess(Notification $item, array $placeholders = []);
 
+    /**
+     * Prepares placeholders, looking for notification recipients and invoke concrete channel for notification processing
+     *
+     * @param Notification $item
+     * @param NotificationModelInterface $eventModel
+     */
     public function process(Notification $item, NotificationModelInterface $eventModel)
     {
         $recipients = [$item->recipient];
@@ -46,6 +59,12 @@ abstract class Channel extends ActiveRecord
         return '{{%notification_channel}}';
     }
 
+    /**
+     * Creates concrete channel from name attribute
+     *
+     * @param array $row
+     * @return Channel
+     */
     public static function instantiate($row)
     {
         $channelClass = __NAMESPACE__ . '\\' . ucfirst($row['name']) . 'Channel';
@@ -53,12 +72,26 @@ abstract class Channel extends ActiveRecord
         return new $channelClass();
     }
 
+    /**
+     * Formats string with placeholders
+     *
+     * @param string $str
+     * @param array $placeholders
+     * @return string
+     */
     protected function replacePlaceholders($str, array $placeholders)
     {
         return Yii::$app->I18n->format($str, $placeholders, Yii::$app->language);
     }
 
-    protected static function preparePlaceholders($model, $placeholders)
+    /**
+     * Prepares placeholders values
+     *
+     * @param object $model
+     * @param array $placeholders
+     * @return array
+     */
+    protected static function preparePlaceholders($model, array $placeholders)
     {
         $ret = [];
         foreach ($placeholders as $key => $value) {

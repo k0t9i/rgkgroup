@@ -10,7 +10,7 @@ interface NotificationModelInterface
      *     placeholder => value
      * ]
      *
-     * Value can be callable object or string name of attribute
+     * Value can be callable object or plain values
      *
      * @return array
      */
