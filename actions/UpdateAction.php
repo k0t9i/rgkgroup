@@ -21,8 +21,8 @@ class UpdateAction extends Action
 
     protected function processForm($id = null, $returnUrl = null)
     {
-        if (!is_null(Yii::$app->request->post($this->cancelParam))) {
-            $this->goBack($returnUrl);
+        if (Yii::$app->request->post($this->cancelParam)) {
+            return $this->goBack($returnUrl);
         }
         $model = $this->getModel($id);
         if ($validate = $this->performAjaxValidation($model)){
@@ -30,7 +30,7 @@ class UpdateAction extends Action
         }
         if ($model->load(Yii::$app->request->post())) {
             if ($model->save()) {
-                if (!is_null(Yii::$app->request->post($this->applyParam))) {
+                if (Yii::$app->request->post($this->applyParam)) {
                     return $this->controller->redirect([$this->applyView, 'id' => $model->id, 'returnUrl' => $returnUrl]);
                 } else {
                     return $this->goBack($returnUrl);
