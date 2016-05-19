@@ -95,7 +95,7 @@ class NotificationController extends Controller
         ]);
 
         return $this->renderPartial('_placeholders', [
-            'items' => $notification->getPlaceholdersKeys()
+            'items' => Yii::$app->notifier->getPlaceholdersKeys($notification)
         ]);
     }
 }

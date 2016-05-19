@@ -30,7 +30,13 @@ $config = [
             'showScriptName' => false,
         ],
         'notifier' => [
-            'class' => 'app\components\Notifier'
+            'class' => 'app\components\Notifier',
+            'placeholders' => [
+                'site_name' => 'RGK Group',
+                'site_link' => function(){
+                    return \yii\helpers\Url::to('/', true);
+                }
+            ]
         ]
     ],
 ];

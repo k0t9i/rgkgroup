@@ -85,7 +85,9 @@ class Article extends ActiveRecord implements NotificationModelInterface
     public function getPlaceholders()
     {
         return [
-            'title' => 'title',
+            'title' => function($model) {
+                return $model->title;
+            },
             'brief' => function ($model) {
                 return mb_substr($model->body, 0, 256);
             },

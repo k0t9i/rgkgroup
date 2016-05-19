@@ -27,11 +27,12 @@ abstract class Channel extends ActiveRecord
             $recipients = User::find()->all();
         }
         $placeholders = self::preparePlaceholders($eventModel, $eventModel->getPlaceholders());
+        $globalPlaceholders = self::preparePlaceholders(Yii::$app->notifier, Yii::$app->notifier->placeholders);
 
         foreach ($recipients as $recipient) {
             unset($item->recipient);
             $item->recipientId = $recipient->id;
-            $fullPlaceholders = ArrayHelper::merge(self::preparePlaceholders($item, $item->getPlaceholders()), $placeholders);
+            $fullPlaceholders = ArrayHelper::merge($globalPlaceholders, self::preparePlaceholders($item, $item->getPlaceholders()), $placeholders);
 
             $this->doProcess($item, $fullPlaceholders);
         }
@@ -61,7 +62,7 @@ abstract class Channel extends ActiveRecord
     {
         $ret = [];
         foreach ($placeholders as $key => $value) {
-            $ret[$key] = is_callable($value) ? call_user_func($value, $model) : $model->$value;
+            $ret[$key] = is_callable($value) ? call_user_func($value, $model) : $value;
         }
         return $ret;
     }

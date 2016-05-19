@@ -8,10 +8,12 @@ use yii\base\Application;
 use yii\base\BootstrapInterface;
 use yii\base\Component;
 use yii\base\Event;
+use yii\helpers\ArrayHelper;
 
 class Notifier extends Component implements BootstrapInterface
 {
     public $notificationModel = 'app\models\notification\Notification';
+    public $placeholders = [];
 
     /**
      * Bootstrap method to be called during application bootstrap stage.
@@ -34,8 +36,13 @@ class Notifier extends Component implements BootstrapInterface
         /** @var Notification $notification */
         $notification = $event->data['notification'];
 
-        foreach ($notification->channels as $channel){
+        foreach ($notification->channels as $channel) {
             $channel->process($notification, $event->model);
         }
+    }
+
+    public function getPlaceholdersKeys(Notification $notification)
+    {
+        return ArrayHelper::merge(array_keys($this->placeholders), $notification->getPlaceholdersKeys());
     }
 }

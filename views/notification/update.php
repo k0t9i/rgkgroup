@@ -11,7 +11,7 @@ $this->title = ($model->isNewRecord ? 'Create' : 'Update') . ' notfication';
 
 $placeholders = '';
 $placeholders = $this->render('_placeholders', [
-    'items' => $model->getPlaceholdersKeys()
+    'items' => Yii::$app->notifier->getPlaceholdersKeys($model)
 ]);
 
 $fieldWithPlaceholders = "{label}\n<div class=\"col-lg-7\">{input}\n<div class=\"event-placeholders\">{$placeholders}</div></div>\n<div class=\"col-lg-4\">{error}</div>";
