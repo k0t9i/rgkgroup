@@ -20,4 +20,4 @@ php yii install
 - Download project from Github 
 - Migrate db
 - Create RBAC permissions and roles
-- Create test user admin/admin
+- Create two test users: admin/admin and user/user

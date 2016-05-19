@@ -32,13 +32,21 @@ class InstallController extends Controller
         $user = new User([
             'username' => 'admin',
             'passwordHash' => Yii::$app->security->generatePasswordHash('admin'),
-            'lastname' => 'Test',
-            'firstname' => 'Test',
+            'lastname' => 'Ivanov',
+            'firstname' => 'Ivan',
             'email' => 'k0t9i@yandex.ru'
         ]);
         $user->save();
-
         Yii::$app->authManager->assign(Yii::$app->authManager->getRole('admin'), $user->id);
+
+        $user = new User([
+            'username' => 'user',
+            'passwordHash' => Yii::$app->security->generatePasswordHash('user'),
+            'lastname' => 'Petrov',
+            'firstname' => 'Petr',
+            'email' => 'k0t9i@ya.ru'
+        ]);
+        $user->save();
     }
 
     public function options($actionID)
