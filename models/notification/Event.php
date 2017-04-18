@@ -2,18 +2,22 @@
 
 namespace app\models\notification;
 
-use Yii;
 use yii\base\InvalidCallException;
 
 /**
  * This is the model class for table "{{%notification_event}}".
  *
+ * @property integer $id
  * @property string $name
  * @property string $model
  * @property string $description
+ *
+ * @property-read array $ownerEvents
+ * @property-read string $uniqueName
  */
 class Event extends \yii\db\ActiveRecord
 {
+    const OWNER_EVENT_TABLE = '{{%notification_event_owner_event}}';
     private $_placeholders = [];
     /**
      * @inheritdoc
@@ -39,5 +43,23 @@ class Event extends \yii\db\ActiveRecord
         }
 
         return $this->_placeholders;
+    }
+
+    public function getOwnerEvents()
+    {
+        return self::find()
+            ->select([
+                self::OWNER_EVENT_TABLE . '.name'
+            ])
+            ->leftJoin(
+                self::OWNER_EVENT_TABLE,
+                self::OWNER_EVENT_TABLE . '.eventId = ' . self::tableName() . '.id'
+            )
+            ->column();
+    }
+
+    public function getUniqueName()
+    {
+        return self::className() . '.' . $this->id;
     }
 }

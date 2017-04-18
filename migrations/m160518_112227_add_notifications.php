@@ -7,14 +7,24 @@ class m160518_112227_add_notifications extends Migration
     public function safeUp()
     {
         $this->createTable('{{%notification_event}}', [
+            'id' => $this->primaryKey(),
             'name' => $this->string(128)->notNull(),
             'model' => $this->string(128)->notNull(),
             'description' => $this->string(2048)
         ]);
-        $this->addPrimaryKey('pk-notification_event', '{{%notification_event}}', ['name', 'model']);
         $this->insert('{{%notification_event}}', [
-            'name' => 'article.afterCreate',
+            'name' => 'After article creation',
             'model' => 'app\models\Article',
+        ]);
+        $this->createTable('{{%notification_event_owner_event}}', [
+            'eventId' => $this->integer()->notNull(),
+            'name' => $this->string(1024)->notNull()
+        ]);
+        $this->addPrimaryKey('pk-notification_event_owner_event', '{{%notification_event_owner_event}}', ['eventId', 'name']);
+        $this->addForeignKey('fk-notification_event_owner_event-notification_event', '{{%notification_event_owner_event}}', 'eventId', '{{%notification_event}}', 'id', 'cascade');
+        $this->insert('{{%notification_event_owner_event}}', [
+            'eventId' => '1',
+            'name' => 'afterInsert',
         ]);
 
         $this->createTable('{{%notification_channel}}', [
@@ -33,13 +43,16 @@ class m160518_112227_add_notifications extends Migration
 
         $this->createTable('{{%notification}}', [
             'id' => $this->primaryKey(),
-            'eventName' => $this->string(256)->notNull(),
+            'eventId' => $this->integer()->notNull(),
             'recipientId' => $this->integer(),
             'senderId' => $this->integer(),
+            'name' => $this->string(256)->notNull(),
             'title' => $this->string(512)->notNull(),
-            'body' => $this->text()->notNull()
+            'body' => $this->text()->notNull(),
+            'createdAt' => $this->dateTime()->notNull(),
+            'updatedAt' => $this->dateTime()
         ]);
-        $this->addForeignKey('fk-notification-event', '{{%notification}}', 'eventName', '{{%notification_event}}', 'name');
+        $this->addForeignKey('fk-notification-event', '{{%notification}}', 'eventId', '{{%notification_event}}', 'id');
         $this->addForeignKey('fk-notification-recipient', '{{%notification}}', 'recipientId', '{{%user}}', 'id');
         $this->addForeignKey('fk-notification-sender', '{{%notification}}', 'senderId', '{{%user}}', 'id');
 
@@ -55,9 +68,10 @@ class m160518_112227_add_notifications extends Migration
 
     public function safeDown()
     {
-        $this->dropTable('{{%notification_event}}');
+        $this->dropTable('{{%j_notification_notification_channel}}');
         $this->dropTable('{{%notification_channel}}');
         $this->dropTable('{{%notification}}');
-        $this->dropTable('{{%j_notification_notification_channel}}');
+        $this->dropTable('{{%notification_event_owner_event}}');
+        $this->dropTable('{{%notification_event}}');
     }
 }

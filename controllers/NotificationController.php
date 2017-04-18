@@ -84,14 +84,14 @@ class NotificationController extends Controller
         ]);
     }
 
-    public function actionEventPlaceholders($name)
+    public function actionEventPlaceholders($id)
     {
         if (!Yii::$app->request->isAjax || !YII_ENV_DEV) {
             throw new BadRequestHttpException();
         }
 
         $notification = new Notification([
-            'eventName' => $name
+            'eventId' => $id
         ]);
 
         return $this->renderPartial('_placeholders', [

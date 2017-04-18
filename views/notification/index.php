@@ -5,6 +5,7 @@ use yii\helpers\Url;
 use yii\grid\ActionColumn;
 use yii\helpers\ArrayHelper;
 use app\models\notification\Event;
+use app\models\notification\Notification;
 
 $this->title = 'Notifications'
 ?>
@@ -30,8 +31,11 @@ $this->title = 'Notifications'
         ],
         'name',
         [
-            'attribute' => 'eventName',
-            'filter' => ArrayHelper::map(Event::find()->asArray()->orderBy(['name' => SORT_ASC])->all(), 'name', 'name'),
+            'attribute' => 'eventId',
+            'filter' => ArrayHelper::map(Event::find()->asArray()->orderBy(['name' => SORT_ASC])->all(), 'id', 'name'),
+            'value' => function (Notification $model) {
+                return $model->event ? $model->event ->name : '';
+            },
             'headerOptions' => [
                 'style' => 'width:200px;'
             ]

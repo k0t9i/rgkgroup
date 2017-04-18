@@ -2,9 +2,7 @@
 
 namespace app\models;
 
-use app\models\notification\NotificationEvent;
 use app\models\notification\NotificationModelInterface;
-use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\db\Expression;
@@ -70,22 +68,9 @@ class Article extends ActiveRecord implements NotificationModelInterface
                     ActiveRecord::EVENT_BEFORE_INSERT => 'createdAt',
                     ActiveRecord::EVENT_BEFORE_UPDATE => 'updatedAt'
                 ]
-            ]
+            ],
+            EventAttachBehavior::className()
         ];
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function afterSave($insert, $changedAttributes)
-    {
-        parent::afterSave($insert, $changedAttributes);
-
-        if ($insert) {
-            self::trigger(self::EVENT_AFTER_CREATE, new NotificationEvent([
-                'model' => $this
-            ]));
-        }
     }
 
     /**

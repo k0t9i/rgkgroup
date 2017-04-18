@@ -34,7 +34,7 @@ $form = ActiveForm::begin([
 ]); ?>
 
 <?= $form->field($model, 'name')->textInput(['autofocus' => true]) ?>
-<?= $form->field($model, 'eventName')->dropDownList(ArrayHelper::map(Event::find()->asArray()->orderBy(['name' => SORT_ASC])->all(), 'name', 'name'), [
+<?= $form->field($model, 'eventId')->dropDownList(ArrayHelper::map(Event::find()->asArray()->orderBy(['name' => SORT_ASC])->all(), 'id', 'name'), [
     'prompt' => 'Select event'
 ]) ?>
 <?= $form->field($model, 'senderId')->dropDownList(ArrayHelper::map(User::find()->asArray()->orderBy(['username' => SORT_ASC])->all(), 'id', 'username'), [
@@ -65,10 +65,10 @@ $form = ActiveForm::begin([
 
 <?php
 $this->registerJs('
-    $("#' . Html::getInputId($model, 'eventName') . '").on("change", function(){
+    $("#' . Html::getInputId($model, 'eventId') . '").on("change", function(){
         var $this = $(this);
         $.ajax({
-            url: "' . Url::to(['event-placeholders']) . '?name=" + $this.val(),
+            url: "' . Url::to(['event-placeholders']) . '?id=" + $this.val(),
             dataType: "html",
             beforeSend: function() {
                 $(".event-placeholders").html("");

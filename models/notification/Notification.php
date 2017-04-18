@@ -15,7 +15,7 @@ use yii\helpers\ArrayHelper;
  * This is the model class for table "{{%notification}}".
  *
  * @property integer $id
- * @property string $eventName
+ * @property integer $eventId
  * @property integer $recipientId
  * @property integer $senderId
  * @property string $title
@@ -58,12 +58,13 @@ class Notification extends ActiveRecord
     public function rules()
     {
         return [
-            [['eventName', 'title', 'body', 'channelsAttr', 'name'], 'required'],
+            [['eventId', 'title', 'body', 'channelsAttr', 'name'], 'required'],
             [['recipientId', 'senderId'], 'integer'],
             ['body', 'string'],
-            [['eventName', 'name'], 'string', 'max' => 256],
+            [['eventId'], 'integer'],
+            [['name'], 'string', 'max' => 256],
             ['title', 'string', 'max' => 512],
-            ['eventName', 'exist', 'targetClass' => Event::className(), 'targetAttribute' => 'name'],
+            ['eventId', 'exist', 'targetClass' => Event::className(), 'targetAttribute' => 'id'],
             [['senderId', 'recipientId'], 'exist', 'targetClass' => User::className(), 'targetAttribute' => 'id'],
             ['channelsAttr', 'exist', 'targetClass' => Channel::className(), 'targetAttribute' => 'id', 'allowArray' => true],
             [['senderId', 'recipientId'], 'default', 'value' => null]
@@ -77,7 +78,7 @@ class Notification extends ActiveRecord
     {
         return [
             'id' => 'ID',
-            'eventName' => 'Event Name',
+            'eventId' => 'Event',
             'recipientId' => 'Recipient',
             'senderId' => 'Sender',
             'title' => 'Title',
@@ -123,7 +124,7 @@ class Notification extends ActiveRecord
     public function getEvent()
     {
         return $this->hasOne(Event::className(), [
-            'name' => 'eventName'
+            'id' => 'eventId'
         ]);
     }
 
