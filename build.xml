@@ -320,6 +320,7 @@
             depends="composer"
             description="Generate project documentation using phpdoc">
         <chmod file="${phpdoc}" perm="0777"/>
+        <chown file="${phpdoc}" owner="jenkins"/>
         <exec executable="${phpdoc}" taskname="phpdoc">
             <arg value="--config" />
             <arg value="${basedir}/build/phpdoc.xml" />
