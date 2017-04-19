@@ -1,0 +1,5 @@
+*
+!.gitignore
+!phpdoc.xml
+!phpmd.xml
+!phpDocumentor.phar

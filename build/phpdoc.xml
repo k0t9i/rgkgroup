@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<phpdocumentor>
+    <parser>
+        <default-package-name>phpDocumentor</default-package-name>
+        <target>api/cache</target>
+        <extensions>
+            <extension>php</extension>
+        </extensions>
+    </parser>
+    <transformer>
+        <target>api</target>
+    </transformer>
+    <transformations>
+        <template name="new-black" />
+    </transformations>
+    <files>
+        <directory>../</directory>
+        <ignore>/build/*</ignore>
+        <ignore>/vendor/*</ignore>
+        <ignore>/tests/*</ignore>
+        <ignore>/runtime/*</ignore>
+        <ignore>/web/*</ignore>
+        <ignore>/migrations/*</ignore>
+        <ignore>/yii</ignore>
+        <ignore>/init</ignore>
+    </files>
+</phpdocumentor>
