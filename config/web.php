@@ -8,8 +8,8 @@ $config = [
     'defaultRoute' => 'message/index',
     'components' => [
         'request' => [
-            // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => '_xRd4NdSmxWBBXgC5X37BN7NYrsCpD2T',
+            'enableCsrfValidation' => true,
         ],
         'user' => [
             'identityClass' => 'app\models\User',

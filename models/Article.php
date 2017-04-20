@@ -20,8 +20,6 @@ use yii\helpers\Url;
  */
 class Article extends ActiveRecord implements NotificationModelInterface
 {
-    const EVENT_AFTER_CREATE = 'article.afterCreate';
-
     /**
      * @inheritdoc
      */

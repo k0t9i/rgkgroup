@@ -11,7 +11,7 @@
     <property name="phpdoccheck" value="${basedir}/vendor/bin/phpdoccheck"/>
 
     <target name="full-build"
-            depends="prepare,static-analysis,codeception,phpdoc,-check-failure"
+            depends="prepare,static-analysis,codeception,-check-failure"
             description="Performs static analysis, runs the tests, and generates project documentation"/>
 
     <target name="full-build-parallel"
@@ -308,8 +308,11 @@
         <exec executable="${codeception}" resultproperty="result.codeception" taskname="codeception">
             <arg value="run"/>
             <arg value="--xml"/>
-            <arg value="-c"/>
-            <arg value="${basedir}/"/>
+            <arg value="${basedir}/build/logs/junit.xml"/>
+            <arg value="--coverage-xml"/>
+            <arg value="${basedir}/build/logs/clover.xml"/>
+            <arg value="--coverage-crap4j"/>
+            <arg value="${basedir}/build/logs/crap4j.xml"/>
         </exec>
 
         <property name="codeception.done" value="true"/>
@@ -320,7 +323,6 @@
             depends="composer"
             description="Generate project documentation using phpdoc">
         <chmod file="${phpdoc}" perm="0777"/>
-        <chown file="${phpdoc}" owner="jenkins"/>
         <exec executable="${phpdoc}" taskname="phpdoc">
             <arg value="--config" />
             <arg value="${basedir}/build/phpdoc.xml" />

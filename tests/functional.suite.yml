@@ -7,5 +7,7 @@
 class_name: FunctionalTester
 modules:
     enabled:
-        # add framework module here
+        - Yii2:
+            configFile: 'config/test.php'
+            part: [orm, email, fixtures]
         - \Helper\Functional
