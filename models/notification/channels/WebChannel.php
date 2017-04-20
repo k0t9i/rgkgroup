@@ -7,9 +7,14 @@ use app\models\notification\Notification;
 
 /**
  * Web notification channel
+ *
+ * @package app\models\notification\channels
  */
 class WebChannel extends Channel
 {
+    /**
+     * @inheritdoc
+     */
     protected function doProcess(Notification $item, array $placeholders = [])
     {
         $senderId = $item->sender ? $item->sender->id : null;

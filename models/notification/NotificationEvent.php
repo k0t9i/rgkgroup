@@ -1,18 +1,26 @@
 <?php
 
 namespace app\models\notification;
+
 use yii\base\InvalidConfigException;
 
 /**
+ * Class NotificationEvent
+ *
  * @property NotificationModelInterface $model
+ * @package app\models\notification
  */
 class NotificationEvent extends \yii\base\Event
 {
     /**
      * @var NotificationModelInterface
      */
-    private $_model;
+    private $model_;
 
+    /**
+     * @inheritdoc
+     * @throws InvalidConfigException
+     */
     public function init()
     {
         if (!$this->model) {
@@ -21,18 +29,22 @@ class NotificationEvent extends \yii\base\Event
     }
 
     /**
+     * Get event's model
+     *
      * @return NotificationModelInterface
      */
     public function getModel()
     {
-        return $this->_model;
+        return $this->model_;
     }
 
     /**
+     * Set event's model
+     *
      * @param NotificationModelInterface $value
      */
     public function setModel($value)
     {
-        $this->_model = $value;
+        $this->model_ = $value;
     }
 }

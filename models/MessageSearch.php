@@ -6,6 +6,8 @@ use yii\data\ActiveDataProvider;
 
 /**
  * Search model for Message active record
+ *
+ * @package app\models
  */
 class MessageSearch extends Message
 {
@@ -14,10 +16,9 @@ class MessageSearch extends Message
     /**
      * Get active data provider for list action
      *
-     * @param $params
      * @return ActiveDataProvider
      */
-    public function search($params)
+    public function search()
     {
         $query = Message::find()
             ->where(['userId' => $this->userId]);

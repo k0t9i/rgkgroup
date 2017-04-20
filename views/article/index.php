@@ -54,7 +54,7 @@ $this->title = 'Articles'
             'headerOptions' => [
                 'style' => 'width:100px;'
             ],
-            'urlCreator' => function($action, $model, $key) use ($returnUrl) {
+            'urlCreator' => function ($action, $model, $key) use ($returnUrl) {
                 $params = is_array($key) ? $key : ['id' => (string) $key];
                 $params[0] = $this->context ? $this->context->id . '/' . $action : $action;
                 $params['returnUrl'] = $returnUrl;

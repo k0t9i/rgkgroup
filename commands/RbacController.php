@@ -6,10 +6,18 @@ use Yii;
 use yii\console\Controller;
 use yii\helpers\Console;
 
+/**
+ * Initialize RBAC system
+ *
+ * @package app\commands
+ */
 class RbacController extends Controller
 {
     public $force = false;
 
+    /**
+     * Create roles and permissions
+     */
     public function actionIndex()
     {
         $manager = Yii::$app->authManager;
@@ -65,6 +73,9 @@ class RbacController extends Controller
         $this->stdout("Rbac system successfully initialized\n", Console::FG_GREEN);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function options($actionID)
     {
         $options = parent::options($actionID);

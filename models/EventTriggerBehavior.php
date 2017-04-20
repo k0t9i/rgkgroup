@@ -6,7 +6,8 @@ use app\models\notification\NotificationEvent;
 use yii\base\Behavior;
 
 /**
- * Class EventTriggerBehavior
+ * Trigger nested events for owner model
+ *
  * @package app\models
  */
 class EventTriggerBehavior extends Behavior
@@ -17,7 +18,7 @@ class EventTriggerBehavior extends Behavior
     public $events = [];
 
     /**
-     * @return array
+     * @inheritdoc
      */
     public function events()
     {

@@ -4,9 +4,7 @@ namespace app\models\notification;
 
 use app\models\notification\channels\Channel;
 use app\models\User;
-use Yii;
 use yii\behaviors\TimestampBehavior;
-use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 use yii\db\Expression;
 use yii\helpers\ArrayHelper;
@@ -23,12 +21,12 @@ use yii\helpers\ArrayHelper;
  * @property string $createdAt
  * @property string $updatedAt
  * @property string $name
- *
  * @property-read Channel[] $channels
  * @property-read Event $event
  * @property-read User $recipient
  * @property-read User $sender
  * @property array|null $channelsAttr
+ * @package app\models\notification
  */
 class Notification extends ActiveRecord
 {
@@ -37,12 +35,12 @@ class Notification extends ActiveRecord
     /**
      * @var array|null
      */
-    private $_channels;
+    private $channels_;
 
     /**
      * @var array
      */
-    private $_oldChannels = [];
+    private $oldChannels_ = [];
 
     /**
      * @inheritdoc
@@ -66,7 +64,10 @@ class Notification extends ActiveRecord
             ['title', 'string', 'max' => 512],
             ['eventId', 'exist', 'targetClass' => Event::className(), 'targetAttribute' => 'id'],
             [['senderId', 'recipientId'], 'exist', 'targetClass' => User::className(), 'targetAttribute' => 'id'],
-            ['channelsAttr', 'exist', 'targetClass' => Channel::className(), 'targetAttribute' => 'id', 'allowArray' => true],
+            [
+                'channelsAttr', 'exist',
+                'targetClass' => Channel::className(), 'targetAttribute' => 'id', 'allowArray' => true
+            ],
             [['senderId', 'recipientId'], 'default', 'value' => null]
         ];
     }
@@ -107,6 +108,8 @@ class Notification extends ActiveRecord
     }
 
     /**
+     * Get related channels
+     *
      * @return \yii\db\ActiveQuery
      */
     public function getChannels()
@@ -119,6 +122,8 @@ class Notification extends ActiveRecord
     }
 
     /**
+     * Get related events
+     *
      * @return \yii\db\ActiveQuery
      */
     public function getEvent()
@@ -139,6 +144,8 @@ class Notification extends ActiveRecord
     }
 
     /**
+     * Get sender of the notification
+     *
      * @return \yii\db\ActiveQuery
      */
     public function getSender()
@@ -158,7 +165,7 @@ class Notification extends ActiveRecord
         if (!is_array($value)) {
             $value = [];
         }
-        $this->_channels = $value;
+        $this->channels_ = $value;
     }
 
     /**
@@ -169,10 +176,10 @@ class Notification extends ActiveRecord
      */
     public function getChannelsAttr()
     {
-        if (is_null($this->_channels)) {
-            $this->_channels = ArrayHelper::getColumn($this->getChannels()->asArray()->all(), 'id');
+        if (is_null($this->channels_)) {
+            $this->channels_ = ArrayHelper::getColumn($this->getChannels()->asArray()->all(), 'id');
         }
-        return $this->_channels;
+        return $this->channels_;
     }
 
     /**
@@ -185,7 +192,7 @@ class Notification extends ActiveRecord
         /**
          * Update channels from create/update actions
          */
-        $insertIds = array_diff($this->channelsAttr, $this->_oldChannels);
+        $insertIds = array_diff($this->channelsAttr, $this->oldChannels_);
         if ($insertIds) {
             $rows = [];
             foreach ($insertIds as $id) {
@@ -196,7 +203,7 @@ class Notification extends ActiveRecord
                 ->batchInsert(static::JUNCTION_TABLE_CHANNEL, ['notificationId', 'channelId'], $rows)
                 ->execute();
         }
-        $deleteIds = array_diff($this->_oldChannels, $this->channelsAttr);
+        $deleteIds = array_diff($this->oldChannels_, $this->channelsAttr);
         if ($deleteIds) {
             static::getDb()
                 ->createCommand()
@@ -214,7 +221,7 @@ class Notification extends ActiveRecord
     public function afterFind()
     {
         parent::afterFind();
-        $this->_oldChannels = $this->channelsAttr;
+        $this->oldChannels_ = $this->channelsAttr;
     }
 
     /**
@@ -231,16 +238,16 @@ class Notification extends ActiveRecord
     public function getPlaceholders()
     {
         return [
-            'recipient_username' => function(Notification $model){
+            'recipient_username' => function (Notification $model) {
                 return $model->recipient ? $model->recipient->username : '';
             },
-            'recipient_lastname' => function(Notification $model){
+            'recipient_lastname' => function (Notification $model) {
                 return $model->recipient ? $model->recipient->lastname : '';
             },
-            'recipient_firstname' => function(Notification $model){
+            'recipient_firstname' => function (Notification $model) {
                 return $model->recipient ? $model->recipient->firstname : '';
             },
-            'recipient_email' => function(Notification $model){
+            'recipient_email' => function (Notification $model) {
                 return $model->recipient ? $model->recipient->email : '';
             }
         ];

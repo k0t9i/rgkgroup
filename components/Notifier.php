@@ -11,7 +11,9 @@ use yii\base\Event;
 use yii\helpers\ArrayHelper;
 
 /**
+ * Send application's notification
  *
+ * @package app\components
  */
 class Notifier extends Component implements BootstrapInterface
 {
@@ -36,11 +38,13 @@ class Notifier extends Component implements BootstrapInterface
     public $placeholders = [];
 
     /**
-     * Bootstrap method to be called during application bootstrap stage.
+     * Bootstrap method to be called during application bootstrap stage
+     *
      * @param Application $app the application currently running
      */
     public function bootstrap($app)
     {
+        $app = null;
         $model = $this->notificationModel;
 
         // todo Think about notification order

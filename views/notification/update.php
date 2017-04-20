@@ -14,7 +14,13 @@ $placeholders = $this->render('_placeholders', [
     'items' => Yii::$app->notifier->getPlaceholdersKeys($model)
 ]);
 
-$fieldWithPlaceholders = "{label}\n<div class=\"col-lg-7\">{input}\n<div class=\"event-placeholders\">{$placeholders}</div></div>\n<div class=\"col-lg-4\">{error}</div>";
+$fieldWithPlaceholders = "
+{label}\n
+<div class=\"col-lg-7\">
+    {input}\n
+    <div class=\"event-placeholders\">{$placeholders}</div>
+  </div>\n
+    <div class=\"col-lg-4\">{error}</div>";
 ?>
 <div class="page-header">
     <h3><?=$this->title?></h3>
@@ -34,16 +40,21 @@ $form = ActiveForm::begin([
 ]); ?>
 
 <?= $form->field($model, 'name')->textInput(['autofocus' => true]) ?>
-<?= $form->field($model, 'eventId')->dropDownList(ArrayHelper::map(Event::find()->asArray()->orderBy(['name' => SORT_ASC])->all(), 'id', 'name'), [
-    'prompt' => 'Select event'
-]) ?>
-<?= $form->field($model, 'senderId')->dropDownList(ArrayHelper::map(User::find()->asArray()->orderBy(['username' => SORT_ASC])->all(), 'id', 'username'), [
-    'prompt' => 'System'
-]) ?>
-<?= $form->field($model, 'recipientId')->dropDownList(ArrayHelper::map(User::find()->asArray()->orderBy(['username' => SORT_ASC])->all(), 'id', 'username'), [
-    'prompt' => 'Send all'
-]) ?>
-<?= $form->field($model, 'channelsAttr')->checkboxList(ArrayHelper::map(Channel::find()->asArray()->orderBy(['title' => SORT_ASC])->all(), 'id', 'title')) ?>
+<?= $form->field($model, 'eventId')->dropDownList(
+    ArrayHelper::map(Event::find()->asArray()->orderBy(['name' => SORT_ASC])->all(), 'id', 'name'),
+    ['prompt' => 'Select event']
+) ?>
+<?= $form->field($model, 'senderId')->dropDownList(
+    ArrayHelper::map(User::find()->asArray()->orderBy(['username' => SORT_ASC])->all(), 'id', 'username'),
+    ['prompt' => 'System']
+) ?>
+<?= $form->field($model, 'recipientId')->dropDownList(
+    ArrayHelper::map(User::find()->asArray()->orderBy(['username' => SORT_ASC])->all(), 'id', 'username'),
+    ['prompt' => 'Send all']
+) ?>
+<?= $form->field($model, 'channelsAttr')->checkboxList(
+    ArrayHelper::map(Channel::find()->asArray()->orderBy(['title' => SORT_ASC])->all(), 'id', 'title')
+) ?>
 <?= $form->field($model, 'title', [
     'template' => $fieldWithPlaceholders,
 ])->textInput() ?>

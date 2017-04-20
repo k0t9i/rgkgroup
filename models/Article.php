@@ -16,6 +16,7 @@ use yii\helpers\Url;
  * @property string $body
  * @property string $createdAt
  * @property string $updatedAt
+ * @package app\models
  */
 class Article extends ActiveRecord implements NotificationModelInterface
 {
@@ -79,7 +80,7 @@ class Article extends ActiveRecord implements NotificationModelInterface
     public function getPlaceholders()
     {
         return [
-            'title' => function($model) {
+            'title' => function ($model) {
                 return $model->title;
             },
             'brief' => function ($model) {

@@ -3,6 +3,7 @@
 namespace app\models\notification;
 
 use yii\base\InvalidCallException;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "{{%notification_event}}".
@@ -11,14 +12,14 @@ use yii\base\InvalidCallException;
  * @property string $name
  * @property string $model
  * @property string $description
- *
  * @property-read array $ownerEvents
  * @property-read string $uniqueName
+ * @package app\models\notification
  */
-class Event extends \yii\db\ActiveRecord
+class Event extends ActiveRecord
 {
     const OWNER_EVENT_TABLE = '{{%notification_event_owner_event}}';
-    private $_placeholders = [];
+    private $placeholders_ = [];
     /**
      * @inheritdoc
      */
@@ -34,17 +35,22 @@ class Event extends \yii\db\ActiveRecord
      */
     public function getPlaceholdersKeys()
     {
-        if (!$this->_placeholders) {
+        if (!$this->placeholders_) {
             $model = new $this->model();
             if (!($model instanceof NotificationModelInterface)) {
                 throw new InvalidCallException('Parameter model should be instance of NotificationModelInterface');
             }
-            $this->_placeholders = array_keys($model->getPlaceholders());
+            $this->placeholders_ = array_keys($model->getPlaceholders());
         }
 
-        return $this->_placeholders;
+        return $this->placeholders_;
     }
 
+    /**
+     * Find related events of the owner model
+     *
+     * @return array
+     */
     public function getOwnerEvents()
     {
         return self::find()
@@ -58,6 +64,11 @@ class Event extends \yii\db\ActiveRecord
             ->column();
     }
 
+    /**
+     * Get unique event name
+     *
+     * @return string
+     */
     public function getUniqueName()
     {
         return self::className() . '.' . $this->id;

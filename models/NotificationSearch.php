@@ -7,11 +7,16 @@ use yii\data\ActiveDataProvider;
 
 /**
  * Search model for Notification active record
+ *
+ * @package app\models
  */
 class NotificationSearch extends Notification
 {
     const PAGE_SIZE = 10;
 
+    /**
+     * @inheritdoc
+     */
     public function rules()
     {
         return [

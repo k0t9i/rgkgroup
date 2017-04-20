@@ -2,19 +2,19 @@
 
 namespace app\models;
 
-use app\components\EventResolver;
 use app\models\notification\Event;
 use yii\base\Behavior;
 use yii\db\BaseActiveRecord;
 
 /**
- * Class EventAttachBehavior
+ * Attach EventTriggerBehavior to owner model on BaseActiveRecord::EVENT_INIT
+ *
  * @package app\models
  */
 class EventAttachBehavior extends Behavior
 {
     /**
-     * @return array
+     * @inheritdoc
      */
     public function events()
     {

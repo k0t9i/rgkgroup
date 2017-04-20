@@ -7,16 +7,23 @@ use app\actions\DeleteAction;
 use app\actions\UpdateAction;
 use app\models\Article;
 use app\models\ArticleSearch;
-use app\models\notification\Notification;
 use Yii;
 use yii\filters\AccessControl;
 use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\web\ViewAction;
 
+/**
+ * Class ArticleController
+ * Controller for Article model
+ *
+ * @package app\controllers
+ */
 class ArticleController extends Controller
 {
+    /**
+     * @inheritdoc
+     */
     public function behaviors()
     {
         return [
@@ -53,6 +60,9 @@ class ArticleController extends Controller
         ];
     }
 
+    /**
+     * @inheritdoc
+     */
     public function actions()
     {
         return [
@@ -71,6 +81,11 @@ class ArticleController extends Controller
         ];
     }
 
+    /**
+     * Show article's list
+     *
+     * @return string
+     */
     public function actionIndex()
     {
         $model = new ArticleSearch();
@@ -82,7 +97,15 @@ class ArticleController extends Controller
         ]);
     }
 
-    public function actionView($id) {
+    /**
+     * Show one article
+     *
+     * @param integer $id
+     * @return string
+     * @throws NotFoundHttpException
+     */
+    public function actionView($id)
+    {
         $model = Article::findOne((int) $id);
         if (!$model) {
             throw new NotFoundHttpException('Article not found');

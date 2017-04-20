@@ -7,17 +7,17 @@ use yii\base\Model;
 /**
  * LoginForm is the model behind the login form.
  *
- * @property User|null $user This property is read-only.
- *
+ * @property-read User|null $user
+ * @package app\models
  */
 class LoginForm extends Model
 {
     public $username;
     public $password;
-    private $_user = false;
+    private $user_ = false;
 
     /**
-     * @return array the validation rules.
+     * @inheritdoc
      */
     public function rules()
     {
@@ -34,9 +34,8 @@ class LoginForm extends Model
      * This method serves as the inline validation for password.
      *
      * @param string $attribute the attribute currently being validated
-     * @param array $params the additional name-value pairs given in the rule
      */
-    public function validatePassword($attribute, $params)
+    public function validatePassword($attribute)
     {
         if (!$this->hasErrors()) {
             $user = $this->getUser();
@@ -47,7 +46,8 @@ class LoginForm extends Model
     }
 
     /**
-     * Logs in a user using the provided username and password.
+     * Logs in a user using the provided username and password
+     *
      * @return boolean whether the user is logged in successfully
      */
     public function login()
@@ -65,9 +65,9 @@ class LoginForm extends Model
      */
     public function getUser()
     {
-        if ($this->_user === false) {
-            $this->_user = User::findOne(['username' => $this->username]);
+        if ($this->user_ === false) {
+            $this->user_ = User::findOne(['username' => $this->username]);
         }
-        return $this->_user;
+        return $this->user_;
     }
 }

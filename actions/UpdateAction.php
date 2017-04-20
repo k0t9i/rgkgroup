@@ -9,6 +9,8 @@ use yii\widgets\ActiveForm;
 
 /**
  * Class UpdateAction
+ *
+ * @package app\actions
  */
 class UpdateAction extends Action
 {
@@ -40,6 +42,13 @@ class UpdateAction extends Action
      */
     public $applyParam = 'apply';
 
+    /**
+     * Run action
+     *
+     * @param integer $id Id of updated model
+     * @param string $returnUrl
+     * @return array|string
+     */
     public function run($id, $returnUrl = null)
     {
         return $this->processForm($id, $returnUrl);
@@ -51,7 +60,7 @@ class UpdateAction extends Action
      *
      * @param integer $id
      * @param string $returnUrl
-     * @return Response
+     * @return string|array
      * @throws \yii\web\NotFoundHttpException
      */
     protected function processForm($id = null, $returnUrl = null)
@@ -60,13 +69,15 @@ class UpdateAction extends Action
             return $this->goBack($returnUrl);
         }
         $model = $this->getModel($id);
-        if ($validate = $this->performAjaxValidation($model)){
+        if ($validate = $this->performAjaxValidation($model)) {
             return $validate;
         }
         if ($model->load(Yii::$app->request->post())) {
             if ($model->save()) {
                 if (Yii::$app->request->post($this->applyParam)) {
-                    return $this->controller->redirect([$this->applyRoute, 'id' => $model->id, 'returnUrl' => $returnUrl]);
+                    return $this->controller->redirect(
+                        [$this->applyRoute, 'id' => $model->id, 'returnUrl' => $returnUrl]
+                    );
                 } else {
                     return $this->goBack($returnUrl);
                 }

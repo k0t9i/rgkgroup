@@ -4,6 +4,10 @@ namespace app\assets;
 
 use yii\web\AssetBundle;
 
+/**
+ * Common asset of the application
+ * @package app\assets
+ */
 class AppAsset extends AssetBundle
 {
     public $basePath = '@webroot';

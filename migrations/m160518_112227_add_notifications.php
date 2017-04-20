@@ -18,7 +18,7 @@ class m160518_112227_add_notifications extends Migration
         ]);
         $this->createTable('{{%notification_event_owner_event}}', [
             'eventId' => $this->integer()->notNull(),
-            'name' => $this->string(1024)->notNull()
+            'name' => $this->string(256)->notNull()
         ]);
         $this->addPrimaryKey('pk-notification_event_owner_event', '{{%notification_event_owner_event}}', ['eventId', 'name']);
         $this->addForeignKey('fk-notification_event_owner_event-notification_event', '{{%notification_event_owner_event}}', 'eventId', '{{%notification_event}}', 'id', 'cascade');

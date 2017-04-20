@@ -6,6 +6,8 @@ use yii\data\ActiveDataProvider;
 
 /**
  * Search model for Article active record
+ *
+ * @package app\models
  */
 class ArticleSearch extends Article
 {

@@ -5,20 +5,25 @@ namespace app\controllers;
 use app\actions\CreateAction;
 use app\actions\DeleteAction;
 use app\actions\UpdateAction;
-use app\models\notification\Event;
 use app\models\notification\Notification;
 use app\models\NotificationSearch;
 use Yii;
 use yii\filters\AccessControl;
-use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
-use yii\web\NotFoundHttpException;
-use yii\web\Response;
 
+/**
+ * Class NotificationController
+ * Controller for Notification model
+ *
+ * @package app\controllers
+ */
 class NotificationController extends Controller
 {
+    /**
+     * @inheritdoc
+     */
     public function behaviors()
     {
         return [
@@ -55,6 +60,9 @@ class NotificationController extends Controller
         ];
     }
 
+    /**
+     * @inheritdoc
+     */
     public function actions()
     {
         return [
@@ -73,6 +81,11 @@ class NotificationController extends Controller
         ];
     }
 
+    /**
+     * Show notification's list
+     *
+     * @return string
+     */
     public function actionIndex()
     {
         $model = new NotificationSearch();
@@ -84,6 +97,13 @@ class NotificationController extends Controller
         ]);
     }
 
+    /**
+     * Render list of notification' placeholders
+     *
+     * @param integer $id
+     * @return string
+     * @throws BadRequestHttpException
+     */
     public function actionEventPlaceholders($id)
     {
         if (!Yii::$app->request->isAjax || !YII_ENV_DEV) {

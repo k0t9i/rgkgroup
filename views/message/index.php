@@ -14,7 +14,7 @@ $this->title = 'Messages'
         'options' => [
             'class' => 'panel-body'
         ],
-        'itemView' => function($model) use ($returnUrl){
+        'itemView' => function ($model) use ($returnUrl) {
             return $this->render('_message_item', [
                 'model' => $model,
                 'returnUrl' => $returnUrl

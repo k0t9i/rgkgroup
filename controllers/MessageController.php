@@ -9,10 +9,18 @@ use yii\filters\AccessControl;
 use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\web\Response;
 
+/**
+ * Class MessageController
+ * Controller for Message model
+ *
+ * @package app\controllers
+ */
 class MessageController extends Controller
 {
+    /**
+     * @inheritdoc
+     */
     public function behaviors()
     {
         return [
@@ -28,6 +36,11 @@ class MessageController extends Controller
         ];
     }
 
+    /**
+     * Show message's list
+     *
+     * @return string
+     */
     public function actionIndex()
     {
         $model = new MessageSearch([
@@ -35,13 +48,21 @@ class MessageController extends Controller
         ]);
 
         return $this->render('index', [
-            'dataProvider' => $model->search(Yii::$app->request->get()),
+            'dataProvider' => $model->search(),
             'searchModel' => $model,
             'returnUrl' => Url::current(['_pjax' => null])
         ]);
     }
 
-    public function actionRead($id, $returnUrl = null) {
+    /**
+     * Mark message as read
+     *
+     * @param integer $id
+     * @param null|string $returnUrl
+     * @throws NotFoundHttpException
+     */
+    public function actionRead($id, $returnUrl = null)
+    {
         $model = Message::findOne((int) $id);
         if (!$model) {
             throw new NotFoundHttpException('Message not found');

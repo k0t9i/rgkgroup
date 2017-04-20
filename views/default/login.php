@@ -4,6 +4,7 @@
 /* @var $model app\models\LoginForm */
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
+
 $this->title = 'Login';
 ?>
 <div class="site-login">
@@ -13,7 +14,7 @@ $this->title = 'Login';
         'enableClientValidation' => false,
         'enableAjaxValidation' => true,
         'validateOnChange' => false,
-        'validateOnBlur' => false   
+        'validateOnBlur' => false
     ]); ?>
 
     <?= $form->field($model, 'username')->textInput(['autofocus' => true]) ?>

@@ -2,6 +2,11 @@
 
 namespace app\models\notification;
 
+/**
+ * Interface NotificationModelInterface
+ *
+ * @package app\models\notification
+ */
 interface NotificationModelInterface
 {
     /**

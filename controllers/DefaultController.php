@@ -9,8 +9,17 @@ use yii\web\Controller;
 use yii\web\Response;
 use yii\widgets\ActiveForm;
 
+/**
+ * Class DefaultController
+ * Default app controller
+ *
+ * @package app\controllers
+ */
 class DefaultController extends Controller
 {
+    /**
+     * @inheritdoc
+     */
     public function behaviors()
     {
         return [
@@ -28,6 +37,9 @@ class DefaultController extends Controller
         ];
     }
 
+    /**
+     * @inheritdoc
+     */
     public function actions()
     {
         return [
@@ -37,6 +49,11 @@ class DefaultController extends Controller
         ];
     }
 
+    /**
+     * Login user
+     *
+     * @return array|string|Response
+     */
     public function actionLogin()
     {
         if (!Yii::$app->user->isGuest) {
@@ -56,6 +73,11 @@ class DefaultController extends Controller
         ]);
     }
 
+    /**
+     * Logout user
+     *
+     * @return Response
+     */
     public function actionLogout()
     {
         Yii::$app->user->logout();

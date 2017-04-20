@@ -7,10 +7,14 @@ use app\models\notification\Notification;
 
 /**
  * Email notification channel
+ *
+ * @package app\models\notification\channels
  */
 class MailChannel extends Channel
 {
-
+    /**
+     * @inheritdoc
+     */
     protected function doProcess(Notification $item, array $placeholders = [])
     {
         $recipient = $item->recipient;

@@ -18,7 +18,7 @@ use app\models\Message;
     </head>
     <body<?=Yii::$app->user->isGuest ? ' class="auth-page"': ''?>>
     <?php $this->beginBody() ?>
-        <?php if (!Yii::$app->user->isGuest): ?>
+        <?php if (!Yii::$app->user->isGuest) : ?>
             <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
                 <div class="container">
                     <div class="navbar-header pull-left">
@@ -34,7 +34,9 @@ use app\models\Message;
                         <?=Menu::widget([
                             'items' => [
                                 [
-                                    'label' => 'Messages <span class="badge">' . Message::getUnreadCountForUser(Yii::$app->user->id) . '</span>',
+                                    'label' => 'Messages <span class="badge">' .
+                                        Message::getUnreadCountForUser(Yii::$app->user->id) .
+                                        '</span>',
                                     'url' => ['/message'],
                                     'active' => Yii::$app->controller->id == 'message',
                                     'encode' => false
@@ -57,7 +59,10 @@ use app\models\Message;
                             ]
                         ])?>
                     </div>
-                    <p class="navbar-text pull-right">Hello, <?=Yii::$app->user->identity->username?>! <a href="<?=Url::to(['default/logout'])?>" class="navbar-link">Logout</a></p>
+                    <p class="navbar-text pull-right">
+                        Hello, <?=Yii::$app->user->identity->username?>!
+                        <a href="<?=Url::to(['default/logout'])?>" class="navbar-link">Logout</a>
+                    </p>
                 </div>
             </nav>
         <?php endif ?>

@@ -33,7 +33,7 @@ $config = [
             'class' => 'app\components\Notifier',
             'placeholders' => [
                 'site_name' => 'RGK Group',
-                'site_link' => function(){
+                'site_link' => function () {
                     return \yii\helpers\Url::to('/', true);
                 }
             ]

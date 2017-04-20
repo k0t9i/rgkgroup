@@ -8,6 +8,8 @@ use yii\web\NotFoundHttpException;
 
 /**
  * Base action class
+ *
+ * @package app\actions
  */
 abstract class Action extends \yii\base\Action
 {
@@ -20,10 +22,16 @@ abstract class Action extends \yii\base\Action
 
     /**
      * Redirect after action to this url if returnUrl is undefined
+     *
      * @var array
      */
     public $defaultReturnUrl = ['index'];
 
+    /**
+     * @inheritdoc
+     *
+     * @throws InvalidConfigException
+     */
     public function init()
     {
         if (!$this->modelName) {
@@ -31,6 +39,12 @@ abstract class Action extends \yii\base\Action
         }
     }
 
+    /**
+     * Return to $returnUrl if not empty
+     *
+     * @param string $returnUrl
+     * @return \yii\web\Response
+     */
     protected function goBack($returnUrl)
     {
         if ($returnUrl) {
@@ -42,7 +56,7 @@ abstract class Action extends \yii\base\Action
     /**
      * Find or create action model
      *
-     * @param $id
+     * @param integer $id
      * @return ActiveRecord
      * @throws NotFoundHttpException
      */

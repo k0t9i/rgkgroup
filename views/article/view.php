@@ -1,7 +1,4 @@
 <?php
-use yii\bootstrap\ActiveForm;
-use yii\bootstrap\Html;
-
 $this->title = $model->title;
 ?>
     <div class="page-header">

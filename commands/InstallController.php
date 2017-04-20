@@ -2,16 +2,28 @@
 
 namespace app\commands;
 
-use app\models\Article;
 use app\models\User;
 use Yii;
 use yii\console\Controller;
 use yii\console\controllers\MigrateController;
 
+/**
+ * Class InstallController
+ * Initial installation of the application
+ * The following steps will be performed:
+ *  - Migrate db
+ *  - Create RBAC permissions and roles
+ *  - Create two test users: admin/admin and user/user
+ *
+ * @package app\commands
+ */
 class InstallController extends Controller
 {
     public $force = false;
 
+    /**
+     * Perform install steps
+     */
     public function actionIndex()
     {
         MigrateController::BASE_MIGRATION;
@@ -49,6 +61,9 @@ class InstallController extends Controller
         $user->save();
     }
 
+    /**
+     * @inheritdoc
+     */
     public function options($actionID)
     {
         $options = parent::options($actionID);

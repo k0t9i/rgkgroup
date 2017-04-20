@@ -2,7 +2,6 @@
 
 namespace app\models;
 
-use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\db\Expression;
@@ -19,8 +18,9 @@ use yii\db\Expression;
  * @property string $readedAt
  * @property-read User $user
  * @property-read User $sender
+ * @package app\models
  */
-class Message extends \yii\db\ActiveRecord
+class Message extends ActiveRecord
 {
     /**
      * @inheritdoc
@@ -47,6 +47,8 @@ class Message extends \yii\db\ActiveRecord
     }
 
     /**
+     * Get related user
+     *
      * @return \yii\db\ActiveQuery
      */
     public function getUser()
@@ -57,6 +59,8 @@ class Message extends \yii\db\ActiveRecord
     }
 
     /**
+     * Get sender of the message
+     *
      * @return \yii\db\ActiveQuery
      */
     public function getSender()
@@ -67,8 +71,10 @@ class Message extends \yii\db\ActiveRecord
     }
 
     /**
-     * @param $userId
-     * @return int
+     * Get count of the unread messages for the user
+     *
+     * @param integer $userId
+     * @return integer
      */
     public static function getUnreadCountForUser($userId)
     {

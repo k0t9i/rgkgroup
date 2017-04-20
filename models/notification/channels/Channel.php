@@ -16,6 +16,7 @@ use yii\helpers\ArrayHelper;
  * @property integer $id
  * @property string $title
  * @property string $name
+ * @package app\models\notification\channels
  */
 abstract class Channel extends ActiveRecord
 {
@@ -28,7 +29,8 @@ abstract class Channel extends ActiveRecord
     abstract protected function doProcess(Notification $item, array $placeholders = []);
 
     /**
-     * Prepares placeholders, looking for notification recipients and invoke concrete channel for notification processing
+     * Prepares placeholders, looking for notification recipients
+     * and invoke concrete channel for notification processing
      *
      * @param Notification $item
      * @param NotificationModelInterface $eventModel
@@ -45,7 +47,11 @@ abstract class Channel extends ActiveRecord
         foreach ($recipients as $recipient) {
             unset($item->recipient);
             $item->recipientId = $recipient->id;
-            $fullPlaceholders = ArrayHelper::merge($globalPlaceholders, self::preparePlaceholders($item, $item->getPlaceholders()), $placeholders);
+            $fullPlaceholders = ArrayHelper::merge(
+                $globalPlaceholders,
+                self::preparePlaceholders($item, $item->getPlaceholders()),
+                $placeholders
+            );
 
             // save old values
             $title = $item->title;
