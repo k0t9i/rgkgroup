@@ -2,8 +2,8 @@
 
 namespace app\models;
 
-use Yii;
 use yii\base\NotSupportedException;
+use yii\base\Security;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\db\Expression;
@@ -79,11 +79,12 @@ class User extends ActiveRecord implements IdentityInterface
      * Validate password hash
      *
      * @param string $password
+     * @param Security $security
      * @return bool
      */
-    public function validatePassword($password)
+    public function validatePassword($password, Security $security)
     {
-        return Yii::$app->security->validatePassword($password, $this->passwordHash);
+        return $security->validatePassword($password, $this->passwordHash);
     }
 
     /**

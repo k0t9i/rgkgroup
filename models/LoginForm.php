@@ -3,6 +3,8 @@ namespace app\models;
 
 use Yii;
 use yii\base\Model;
+use yii\base\Security;
+use yii\web\User  as WebUser;
 
 /**
  * LoginForm is the model behind the login form.
@@ -15,6 +17,22 @@ class LoginForm extends Model
     public $username;
     public $password;
     private $user_ = false;
+    private $webUser_;
+    private $security_;
+
+    /**
+     * LoginForm constructor.
+     *
+     * @param Security $security
+     * @param WebUser $user
+     * @param array $config
+     */
+    public function __construct(Security $security, WebUser $user, array $config = [])
+    {
+        parent::__construct($config);
+        $this->webUser_ = $user;
+        $this->security_ = $security;
+    }
 
     /**
      * @inheritdoc
@@ -39,7 +57,7 @@ class LoginForm extends Model
     {
         if (!$this->hasErrors()) {
             $user = $this->getUser();
-            if (!$user || !$user->validatePassword($this->password)) {
+            if (!$user || !$user->validatePassword($this->password, $this->security_)) {
                 $this->addError($attribute, 'Incorrect username or password.');
             }
         }
@@ -53,7 +71,7 @@ class LoginForm extends Model
     public function login()
     {
         if ($this->validate()) {
-            return Yii::$app->user->login($this->getUser());
+            return $this->webUser_->login($this->getUser());
         }
         return false;
     }
