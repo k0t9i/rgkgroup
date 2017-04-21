@@ -1,9 +1,9 @@
 <?php
 
-namespace app\tests;
+namespace app\tests\unit;
 
 use app\models\User;
-use app\tests\fixtures\UserFixtures;
+use app\tests\unit\fixtures\UserFixture;
 use Codeception\Util\Stub;
 use yii\base\Security;
 
@@ -24,7 +24,9 @@ class UserTest extends \Codeception\Test\Unit
 
     public function testFindByIdentity()
     {
-        $this->tester->haveFixtures(['users' => UserFixtures::className()]);
+        $this->tester->haveFixtures([
+            'users' => UserFixture::className()
+        ]);
         $userFixture = $this->tester->grabFixture('users', 0);
 
         $this->tester->assertNotEmpty($user = User::findIdentity($userFixture['id']));
